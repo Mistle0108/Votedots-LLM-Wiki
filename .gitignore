@@ -1,0 +1,4 @@
+.obsidian/
+raw/repos/*.local.md
+Thumbs.db
+.DS_Store
