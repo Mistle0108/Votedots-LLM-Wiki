@@ -61,6 +61,14 @@ tags:
 - updated: `wiki/log.md`
 - note: 새로 작성하는 GitHub issue 제목/본문, PR 제목/본문, 변경 요약은 기본적으로 한글로 작성하고 다른 언어는 사용자가 별도 요청한 경우에만 사용하도록 규칙을 추가함
 
+## [2026-04-22] update | clarify usage guide as human-facing document
+- updated: `AGENTS.md`
+- updated: `wiki/AGENTS.md`
+- updated: `wiki/Home/Wiki-Operating-Rules.md`
+- updated: `wiki/Home/Wiki-Usage-Guide.md`
+- updated: `wiki/log.md`
+- note: `wiki/Home/Wiki-Usage-Guide.md`는 사람용 요청 예시 문서이고, LLM은 규칙 해석 시 `AGENTS.md` 계열 문서를 우선한다는 역할 분리를 명시함
+
 ## [2026-04-22] update | wiki usage guide added
 - added: `wiki/Home/Wiki-Usage-Guide.md`
 - updated: `wiki/Home/README.md`

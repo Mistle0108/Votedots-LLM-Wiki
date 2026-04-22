@@ -32,7 +32,8 @@ Output/   # 세션 결과, 임시 분석, 보고 초안
 - `/wiki/Home/Wiki-Operating-Rules.md`
   - 팀 공유용 운영 설명서
 - `/wiki/Home/Wiki-Usage-Guide.md`
-  - 프로젝트 세션 기준 사용 가이드
+  - 프로젝트 세션 기준 사람용 사용 가이드
+  - LLM 실행 규칙 원본이 아니라, 사용자가 LLM에게 어떻게 요청할지 보는 예시 문서
 - `/README.md`
   - 저장소 첫 화면 안내
 
