@@ -10,6 +10,46 @@ tags:
 
 # log
 
+## [2026-04-22] update | guard against PowerShell PR body mojibake
+- updated: `AGENTS.md`
+- updated: `wiki/AGENTS.md`
+- updated: `wiki/Home/Wiki-Operating-Rules.md`
+- updated: `wiki/log.md`
+- note: PowerShell 환경에서 한글 GitHub issue/PR 본문을 stdin이나 here-string 파이프로 직접 넘기지 않고, UTF-8 파일 기반으로 작성하도록 규칙을 추가했다. 이미 `??`처럼 깨진 본문은 같은 내용을 UTF-8 파일로 다시 업로드하는 방식으로 정정하도록 명시했다.
+
+## [2026-04-22] update | formalize project-session wiki local-card setup
+- updated: `AGENTS.md`
+- updated: `README.md`
+- updated: `raw/repos/AGENTS.md`
+- updated: `raw/repos/_repo-local-card.template.md`
+- updated: `wiki/AGENTS.md`
+- updated: `wiki/Home/README.md`
+- updated: `wiki/Home/Wiki-Operating-Rules.md`
+- updated: `wiki/Home/Wiki-Usage-Guide.md`
+- added: `wiki/Home/Project-Session-Setup.md`
+- updated: `wiki/index.md`
+- updated: `wiki/log.md`
+- note: 프로젝트 세션에서 local wiki 저장소를 기본 참조 환경으로 쓰는 규칙을 명시하고, `raw/repos/{repo}.local.md`의 `wiki_repo_path`를 1차 기준으로 고정했다. 경로가 없거나 접근이 안 되면 사용자에게 한 번만 확인한 뒤 local card에 저장하고 이후 기본값으로 재사용하도록 정리했으며, 이를 그대로 따라 할 수 있는 초기 세팅 문서를 추가했다.
+
+## [2026-04-22] update | enforce UTF-8-safe wiki reading and docs issue title prefix
+- updated: `AGENTS.md`
+- updated: `wiki/AGENTS.md`
+- updated: `wiki/Home/Wiki-Operating-Rules.md`
+- updated: `wiki/Home/Wiki-Usage-Guide.md`
+- updated: `.github/ISSUE_TEMPLATE/wiki-change-template.md`
+- updated: `wiki/log.md`
+- note: 한글 문서는 처음부터 `git show` 또는 UTF-8 명시 읽기처럼 안 깨지는 경로로 확인하도록 규칙을 강화하고, 출력 인코딩을 바꿔가며 재시도하는 방식을 기본 경로에서 제외했다. wiki 규칙/가이드/운영 문서 변경 이슈 제목 prefix도 `[wiki]`가 아니라 `docs:`로 고정했다.
+
+## [2026-04-22] update | front-load session usage prompts and simple wiki registration command
+- updated: `AGENTS.md`
+- updated: `wiki/AGENTS.md`
+- updated: `README.md`
+- updated: `wiki/Home/README.md`
+- updated: `wiki/Home/Wiki-Usage-Guide.md`
+- updated: `wiki/Home/Wiki-Operating-Rules.md`
+- updated: `wiki/log.md`
+- note: `wiki 어떻게 사용해?` 질문에는 문서 링크보다 세션에서 바로 쓸 수 있는 요청 예시를 먼저 안내하도록 정리하고, `지금 완료된 작업 wiki에 등록해줘.` 같은 짧은 명령을 현재 프로젝트 세션의 완료 작업 기준 wiki 등록 요청으로 해석하는 규칙과 사용자 안내를 추가함
+
 ## [2026-04-22] update | formalize wiki sync check and project-session workflow
 - updated: `AGENTS.md`
 - updated: `wiki/AGENTS.md`

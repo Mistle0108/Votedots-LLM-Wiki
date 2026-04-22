@@ -19,11 +19,27 @@ tags:
 - 프로젝트 작업은 프로젝트 저장소 세션에서 진행하고, wiki는 같은 세션에서 로컬 참조 문서로 읽는다.
 - 원격 최신 확인이 불가능하거나 로컬/원격이 다르면 최신이라고 단정하지 말고, 실제 사용 기준 `branch + commit`을 먼저 밝힌다.
 
+## 프로젝트 세션 초기 세팅
+- 프로젝트 세션에서 local wiki 저장소를 기본 참조로 쓰려면 먼저 [Project Session Setup](wiki/Home/Project-Session-Setup.md)를 따라 초기 세팅을 맞춘다.
+- 핵심은 `raw/repos/{repo}.local.md`의 `wiki_repo_path`에 현재 shell 기준 wiki 경로를 저장해 두는 것이다.
+- 경로가 없거나 접근이 안 되면 한 번만 확인하고 같은 파일에 저장한 뒤 이후 기본값으로 재사용한다.
+- 프로젝트 `execution_path`가 WSL이면 wiki 경로도 WSL에서 보이는 경로를 쓴다.
+
+## 빠른 사용 예시
+- `wiki 읽고 현재 상태와 다음 작업 정리해줘.`
+- `wiki에서 이 내용 확인해봐: history panel`
+- `wiki 기준으로 round summary 관련 문서 찾아줘.`
+- `wiki 기준으로 이 기능이 왜 이렇게 설계됐는지 설명해줘.`
+- `지금 완료된 작업 wiki에 등록해줘.`
+- `wiki 규칙 변경 이슈 초안 만들어줘.`
+- 사용자는 문서 경로를 몰라도 주제나 완료된 작업만 짧게 말하면 된다.
+
 ## 현재 기준
 | 항목 | 값 |
 | --- | --- |
 | 코드 기준 커밋 | `Votedots main@31d22b3535627b3a0a56ea1cf9e41411475f72fd` |
 | wiki 사용 원칙 | 로컬 `main`과 `origin/main` 일치 확인 후 읽기 |
+| 프로젝트 세션 초기 세팅 | [[wiki/Home/Project-Session-Setup|Project Session Setup]] |
 | 프로젝트 정의 문서 | [[wiki/01-Project/README|01-Project]] |
 | 구조 문서 | [[wiki/02-Architecture/System-Reference|System Reference]] |
 | 흐름 문서 | [[wiki/02-Architecture/Data-Flow|Data Flow]] |
@@ -59,6 +75,9 @@ tags:
 | 운영 기준이 무엇인가 | [[wiki/Home/Wiki-Operating-Rules|Wiki Operating Rules]] | 팀 운영 기준 확인 |
 
 ## wiki 반영 시작점
+- 사용자는 `지금 완료된 작업 wiki에 등록해줘.`처럼 짧게 요청해도 된다.
+- LLM은 이를 현재 프로젝트 세션의 완료 작업 기준으로 wiki 반영 범위를 정리해 달라는 요청으로 해석한다.
+- 먼저 기준 프로젝트 PR/merge commit 또는 완료 작업 범위를 확인하고, `05-Sources`, `03-Status`, 필요 시 `04-Records`, `log.md`, `index.md` 반영 여부를 정리한다.
 - 프로젝트 브랜치 PR이 완료되고 사용자가 wiki 등록을 요청하면, 같은 프로젝트 세션에서 반영 범위를 먼저 정리한다.
 - 반영 범위 정리는 프로젝트 세션에서 하더라도, 실제 wiki 반영 브랜치 생성과 wiki git 작업은 wiki 저장소에서 진행한다.
 - wiki 반영 직전에는 wiki 로컬 `main`과 `origin/main`이 같은지 다시 확인한다.
@@ -68,6 +87,7 @@ tags:
 - 문서 수정 후에는 사용자 동의를 받아 커밋, PR, main 머지 순으로 진행한다.
 
 ## 참고 문서
+- 프로젝트 세션 초기 세팅: [[wiki/Home/Project-Session-Setup|Project Session Setup]]
 - 팀 공유용 운영 설명서: [[wiki/Home/Wiki-Operating-Rules|Wiki Operating Rules]]
 - 실제 사용 가이드: [[wiki/Home/Wiki-Usage-Guide|Wiki Usage Guide]]
 - LLM 전역 규칙: `/AGENTS.md`

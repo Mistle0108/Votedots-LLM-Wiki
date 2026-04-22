@@ -1,7 +1,7 @@
 ---
 name: wiki change
 about: wiki 규칙, 운영 절차, 문서 구조 변경을 위한 이슈 템플릿
-title: "[wiki] "
+title: "docs: "
 labels: ""
 assignees: ""
 ---

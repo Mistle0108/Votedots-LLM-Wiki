@@ -60,7 +60,10 @@ code@commit      # 특정 branch + commit에서 실제로 확인한 코드
 ## 문서 원문 읽기 기본값
 - 커밋된 한글 문서는 원칙적으로 `git show <ref>:<repo-relative-path>`로 먼저 읽는다.
 - 기준 `ref`가 불명확하면 먼저 이번 판단의 `branch + commit`을 확정한 뒤 읽는다.
-- `Get-Content`, `Select-String`, 기타 PowerShell 파일 읽기는 미커밋 변경, 신규 파일, 워킹트리 상태 확인처럼 fallback 사유가 있을 때만 사용한다.
+- 한글 문서 확인에서 PowerShell 기본 출력 인코딩에 의존하지 않는다.
+- `Get-Content`, `Select-String`, 기타 파일 시스템 읽기는 미커밋 변경, 신규 파일, 워킹트리 상태 확인처럼 fallback 사유가 있을 때만 사용한다.
+- fallback 파일 읽기가 필요하면 `Get-Content -Encoding utf8`처럼 UTF-8을 명시한 방식만 사용한다.
+- 출력 인코딩을 임시로 바꿔가며 여러 번 재시도하는 방식은 기본 경로로 쓰지 않는다.
 - 같은 턴에서 이미 `git show`로 확인한 커밋 문서를 PowerShell 파일 읽기로 다시 중복 확인하지 않는다.
 - 미커밋 변경, 신규 파일, 워킹트리 상태만 `git diff`, `git status`, 파일 시스템 읽기로 보완한다.
 - 세부 fallback 규칙은 `wiki/AGENTS.md`를 따른다.
@@ -70,7 +73,13 @@ code@commit      # 특정 branch + commit에서 실제로 확인한 코드
 - 해석과 우선순위는 `wiki/` 문서에서 다루고, 상세 운영 규칙은 `wiki/AGENTS.md`를 따른다.
 
 ## 프로젝트 세션 연계 규칙
+- 프로젝트 세션에서 로컬 wiki 저장소를 참조하는 것을 기본 환경으로 본다.
 - 프로젝트 작업을 위해 wiki를 읽거나 wiki 반영이 필요할 때는 프로젝트 저장소의 `execution_path` 기준 세션에서 진행한다.
+- 프로젝트 세션에서 로컬 wiki 저장소 경로를 확인할 때는 먼저 `raw/repos/{repo}.local.md`의 `wiki_repo_path`를 본다.
+- `wiki_repo_path`가 있고 현재 세션에서 접근 가능하면 그 경로를 이번 세션의 기본 wiki 경로로 고정한다.
+- `wiki_repo_path`가 없거나 현재 세션에서 접근할 수 없으면 사용자에게 경로를 한 번만 확인한 뒤, 그 값을 `raw/repos/{repo}.local.md`에 저장하고 이후 기본값으로 사용한다.
+- 프로젝트 세션의 shell에서 보이는 경로를 써야 한다. 예를 들어 프로젝트 `execution_path`가 WSL 경로면 wiki 경로도 WSL에서 보이는 경로를 쓴다.
+- 환경 변수나 shell 초기화 파일 설정은 필수로 두지 않는다.
 - 프로젝트 세션에서는 로컬 wiki를 참조 문서로 읽고, 사용자의 각 명령이나 중요한 판단 단계 전에 wiki 로컬/원격 일치 여부를 다시 확인한다.
 - 프로젝트 코드 확인, 설계, 구현, 검증은 프로젝트 저장소에서 수행하고, wiki 저장소는 문서화 대상과 반영 브랜치 용도로만 사용한다.
 - wiki 반영 브랜치 생성, wiki 문서 commit, wiki PR 생성과 merge는 모두 wiki 저장소에서 진행한다. 프로젝트 저장소에서 wiki 반영 브랜치를 만들지 않는다.
@@ -87,9 +96,16 @@ code@commit      # 특정 branch + commit에서 실제로 확인한 코드
   6. `wiki/03-Status/Next-Work.md`
 - 그 다음 세부 규칙은 `wiki/AGENTS.md`를 따른다.
 
+## 사용법 안내 규칙
+- 사용자가 `wiki를 어떻게 사용해?`, `wiki에서 뭐 물어볼 수 있어?`, `wiki에서 어떻게 확인해?`라고 물으면 `wiki/Home/Wiki-Usage-Guide.md` 기준의 세션용 요청 예시를 먼저 3~8개 제시한다.
+- 문서 링크만 나열하지 말고, 사용자가 바로 복사해 쓸 수 있는 짧은 요청문을 우선 안내한다.
+- 그 다음 필요할 때만 `Wiki Usage Guide`, `Home`, `Wiki Operating Rules` 순서로 관련 문서를 덧붙인다.
+
 ## publish 요약 규칙
 - wiki 반영은 direct push가 아니라 `branch + PR` 기준으로 운영한다.
 - 프로젝트 브랜치 PR이 완료되고 사용자가 wiki 등록을 요청하면, 프로젝트 세션에서 기준 프로젝트 PR/commit과 반영 범위를 먼저 정리한다.
+- 사용자가 `지금 완료된 작업 wiki에 등록해줘.`처럼 짧게 요청해도, 현재 프로젝트 세션의 완료 작업 기준으로 wiki 반영 범위를 정리해 달라는 뜻으로 해석한다.
+- 이때 사용자가 문서 경로, 반영 대상 문서, 세부 절차를 하나씩 지정하지 않아도 내부 규칙에 따라 후속 wiki 절차를 정리한다.
 - wiki 반영 직전에는 wiki 로컬 `main`과 `origin/main`이 같은지 다시 확인한다.
 - 프로젝트 세션에서 반영 범위를 정리하더라도, 실제 wiki 반영 브랜치 생성과 git 작업 대상 저장소는 wiki 저장소다.
 - 상세한 브랜치 규칙과 반영 절차는 `wiki/AGENTS.md`를 따른다.
@@ -119,10 +135,14 @@ code@commit      # 특정 branch + commit에서 실제로 확인한 코드
 - 이슈를 완전히 닫지 않고 관련만 있거나 부분 반영이면 `Closes` 대신 `Refs #<번호>`를 적는다.
 - 프로젝트 코드 관련 `issue`는 대상 코드 repo의 GitHub issue template을 따른다.
 - wiki 저장소 자체 `issue`는 wiki 저장소 전용 변경 이슈 template을 따른다.
+- wiki 규칙/가이드/운영 문서 수정 이슈 제목은 `docs: <주제>` 형식을 사용한다.
 - 서로 다른 저장소의 issue template을 혼용하지 않는다.
 - wiki 규칙/가이드/운영 문서 수정 PR의 `비고`에는 사용자 문서 동기화 여부, issue/template 변경 여부, 생략 사유를 함께 적는다.
 - 새로 작성하는 GitHub `issue` 제목/본문, `PR` 제목/본문, 변경 요약은 기본적으로 한글로 작성한다.
 - 다른 언어는 사용자가 명시적으로 요청한 경우에만 사용한다.
+- PowerShell 환경에서 한글 `issue`/`PR` 본문을 올릴 때는 stdin이나 here-string 파이프 입력을 기본 경로로 쓰지 않는다.
+- 한글 본문이 필요하면 UTF-8로 저장된 파일을 만들고 `gh ... --body-file <utf8-file>`처럼 파일 기반으로 전달한다.
+- 이미 올라간 `issue`/`PR` 본문이 `??`처럼 깨졌다면 인코딩 문제로 보고, 같은 내용을 UTF-8 파일 기반으로 다시 업로드한다.
 - wiki 규칙/가이드/운영 문서 수정 PR 제목은 `docs: <주제>` 형식을 사용한다.
 - 프로젝트 PR 반영 wiki PR 제목은 `pr: <project-pr-number> <주제>` 형식을 사용한다.
 - PR 본문 템플릿의 상세 규칙은 `wiki/AGENTS.md`를 따른다.

@@ -40,7 +40,10 @@ log.md            # wiki 운영 이력
 - 커밋된 한글 Markdown 원문은 원칙적으로 `git show <ref>:<repo-relative-path>`로 먼저 읽는다.
 - `<ref>`가 불명확하면 먼저 이번 판단의 기준 `branch + commit`을 확정한다.
 - 이유: 현재 PowerShell 출력 인코딩 환경에서는 한글 문서가 깨질 수 있고, 처음부터 Git 객체를 읽는 편이 기준 commit 일관성과 토큰 사용 면에서도 더 효율적이다.
-- `Get-Content`, `Select-String`, 기타 PowerShell 파일 읽기는 미커밋 변경, 신규 파일, 워킹트리 상태 확인이 필요할 때만 fallback으로 사용한다.
+- 한글 문서를 확인할 때는 PowerShell 기본 출력 인코딩에 의존하지 않는다.
+- `Get-Content`, `Select-String`, 기타 파일 시스템 읽기는 미커밋 변경, 신규 파일, 워킹트리 상태 확인이 필요할 때만 fallback으로 사용한다.
+- fallback 파일 읽기가 필요하면 `Get-Content -Encoding utf8`처럼 UTF-8을 명시한 방식만 사용한다.
+- 출력 인코딩을 임시로 바꿔가며 여러 번 재시도하는 방식은 기본 경로로 쓰지 않는다.
 - 같은 턴에서 이미 `git show`로 읽은 커밋 문서를 PowerShell 파일 읽기로 다시 중복 확인하지 않는다.
 - 필요한 경우에도 전체 파일 재읽기보다 필요한 섹션만 좁혀 읽는다.
 - 커밋 기준 본문과 워킹트리 본문을 함께 읽었으면 둘을 섞어 말하지 말고 구분해서 설명한다.
@@ -49,10 +52,10 @@ log.md            # wiki 운영 이력
 
 | 상황 | 기본 확인 방식 | fallback | 메모 |
 | --- | --- | --- | --- |
-| 커밋된 한글 문서 원문 확인 | `git show <ref>:<path>` | 없음 | 먼저 기준 `branch + commit`을 확정한다. |
+| 커밋된 한글 문서 원문 확인 | `git show <ref>:<path>` | 없음 | 처음부터 안 깨지는 경로로 읽는다. 먼저 기준 `branch + commit`을 확정한다. |
 | 같은 커밋 문서의 특정 섹션 재확인 | `git show <ref>:<path>` 후 필요한 섹션만 확인 | 없음 | 같은 턴에서 PowerShell 파일 읽기로 다시 확인하지 않는다. |
-| 미커밋 변경 확인 | `git diff -- <path>` | 파일 시스템 읽기 | baseline이 아니라 워킹트리 상태로 취급한다. |
-| 신규 untracked 파일 확인 | 파일 시스템 읽기 | 없음 | Git 객체에 아직 없으므로 `git show` 대상이 아니다. |
+| 미커밋 변경 확인 | `git diff -- <path>` | 파일 시스템 읽기 | baseline이 아니라 워킹트리 상태로 취급한다. 파일 시스템 읽기가 필요하면 UTF-8을 명시한다. |
+| 신규 untracked 파일 확인 | 파일 시스템 읽기 | 없음 | Git 객체에 아직 없으므로 `git show` 대상이 아니다. UTF-8을 명시한다. |
 | 워킹트리 전체 상태 확인 | `git status` | 파일 시스템 읽기 | 커밋 기준 내용과 섞지 말고 별도로 설명한다. |
 
 ## 작업 전 최신화 확인 원칙
@@ -97,17 +100,25 @@ wiki 로컬 main과 origin/main이 다르지만, 현재 상태에서는 main 전
 ```
 
 ## 프로젝트 세션 연계 규칙
+- 프로젝트 세션에서 local wiki 저장소를 참조하는 것을 기본 환경으로 본다.
 - 프로젝트 작업을 위해 wiki를 읽거나 wiki 등록을 준비할 때는 프로젝트 저장소의 `execution_path` 기준 세션에서 진행한다.
+- 프로젝트 세션에서 local wiki 저장소 경로를 확인할 때는 먼저 `raw/repos/{repo}.local.md`의 `wiki_repo_path`를 본다.
+- `wiki_repo_path`가 있고 현재 세션에서 접근 가능하면 그 경로를 이번 세션의 기본 wiki 경로로 고정한다.
+- `wiki_repo_path`가 없거나 현재 세션에서 접근할 수 없으면 자동 추정하지 말고 사용자에게 경로를 한 번만 확인한다.
+- 확인한 경로는 `raw/repos/{repo}.local.md`의 `wiki_repo_path`에 저장하고 이후 기본값으로 재사용한다.
+- 프로젝트 세션의 shell에서 실제로 접근 가능한 경로를 써야 한다. 프로젝트 `execution_path`가 WSL이면 wiki 경로도 WSL에서 보이는 경로를 쓴다.
 - 프로젝트 세션에서는 로컬 wiki를 참조 문서로 읽고, 각 사용자 명령과 중요한 판단 단계 전에 wiki 로컬/원격 일치 여부를 다시 확인한다.
 - 프로젝트 저장소 경로가 필요하면 `raw/repos/{repo}.local.md`의 `execution_path`를 먼저 확인하고, 없으면 세션 입력으로 받는다.
+- 같은 세션에서 이미 한 번 확인한 wiki repo 경로가 있으면 다시 묻지 않고 그 값을 계속 사용한다.
 - 프로젝트 코드 확인, 설계, 구현, 검증은 프로젝트 저장소에서 수행하고, wiki 저장소는 문서 반영 브랜치와 공유 문서 관리 용도로만 사용한다.
 - wiki 반영 브랜치 생성, wiki 문서 commit, wiki PR 생성과 merge는 모두 wiki 저장소에서 수행한다. 프로젝트 저장소에서는 반영 범위만 정리하고, 실제 git 작업은 wiki 저장소 기준으로 진행한다.
+- 환경 변수나 shell 초기화 파일 설정은 필수로 두지 않는다.
 - 프로젝트 브랜치 PR이 완료된 뒤 사용자가 wiki 등록을 요청하면, 먼저 프로젝트 PR/merge commit 기준으로 반영 범위를 정리한다.
 
 ## LLM 기본 읽기 순서
 - 사용자가 `wiki 읽고 내용 확인해`, `wiki 보고 정리해`, `wiki 기준으로 말해줘`라고 하면 아래 순서로 먼저 읽는다.
   1. wiki 로컬 `main`과 `origin/main`의 최신 상태가 같은지 확인하고, 이번 답변의 기준 `branch + commit`을 확정한다.
-  2. 프로젝트 연계 질문이면 프로젝트 저장소 `execution_path`와 현재 실행 컨텍스트를 확인한다.
+  2. 프로젝트 연계 질문이면 프로젝트 저장소 `execution_path`, 현재 실행 컨텍스트, `raw/repos/{repo}.local.md`의 `wiki_repo_path` 또는 같은 세션에서 이미 확인한 wiki repo 경로를 확인한다.
   3. 커밋된 문서는 원칙적으로 `git show <ref>:<path>`로 원문을 읽는다.
   4. `wiki/index.md`
   5. `wiki/Home/README.md`
@@ -138,11 +149,29 @@ wiki 로컬 main과 origin/main이 다르지만, 현재 상태에서는 main 전
 - 사람용 안내 문서와 LLM 규칙 문서가 동시에 보이면, LLM은 항상 `AGENTS.md` 계열 규칙을 우선한다.
 - 커밋된 한글 문서 원문 확인은 처음부터 Git 객체 기준으로 수행하고, fallback 사유가 없으면 PowerShell 파일 읽기로 우회하지 않는다.
 - sync 불일치가 있으면 `불일치 안내 -> fast-forward 시도/실패 결과 -> 새 기준 commit 또는 실패 사유` 순서로 짧게 설명한다.
+- 프로젝트 세션에서 wiki 경로를 설명할 때는 현재 기준 wiki repo 경로와 그 경로를 어디서 확정했는지(`wiki_repo_path` / 같은 세션 확인값)를 함께 밝힌다.
+
+## wiki 사용법 질문 응답 원칙
+- 사용자가 `wiki를 어떻게 사용하냐`, `wiki에서 뭐 물어볼 수 있냐`, `wiki 어떻게 봐야 하냐`고 물으면 `wiki/Home/Wiki-Usage-Guide.md` 기준의 세션용 요청 예시를 먼저 3~8개 제시한다.
+- 요청 예시는 상태 확인, 주제 확인, 근거 문서 찾기, 설계 이유 확인, wiki 등록 요청을 고르게 포함한다.
+- 문서 링크만 나열하지 말고, 사용자가 바로 복사해 쓸 수 있는 짧은 요청문을 먼저 보여준다.
+- 관련 문서 링크는 그 다음에 `wiki/Home/Wiki-Usage-Guide.md`, `wiki/Home/README.md`, `wiki/Home/Wiki-Operating-Rules.md` 순서로 덧붙인다.
+
+## 간단한 wiki 등록 요청 해석 원칙
+- 사용자가 `지금 완료된 작업 wiki에 등록해줘.`라고 요청하면, 문서 경로나 반영 절차를 다시 하나씩 묻기보다 현재 프로젝트 세션의 최신 완료 작업 기준 wiki 등록 요청으로 해석한다.
+- 가능하면 기준 프로젝트 PR/merge commit 또는 방금 완료한 작업 범위를 먼저 확정한다.
+- 기준이 확정되면 `wiki/05-Sources/`, `wiki/03-Status/`, 필요 시 `wiki/04-Records/`, `wiki/log.md`, `wiki/index.md` 반영 여부를 먼저 정리한다.
+- 사용자는 반영 대상 문서를 일일이 지정할 필요가 없다. 범위를 제한하고 싶을 때만 추가 조건을 준다.
+- 기준이 모호하면 그때만 최소 질문으로 기준 PR/commit 또는 반영 범위를 확인한다.
+- 이후 실제 브랜치 생성, 문서 수정, PR 준비는 아래 publish 절차와 사용자 동의 규칙을 따른다.
 
 ## 이슈 / PR 작성 언어
 - 새로 작성하는 GitHub `issue` 제목/본문, `PR` 제목/본문, 변경 요약은 기본적으로 한글로 작성한다.
 - 다른 언어는 사용자가 명시적으로 요청한 경우에만 사용한다.
 - 원문 메타데이터나 외부 원문 인용은 source 기준을 유지하되, 새로 작성하는 설명과 요약은 한글을 기본으로 한다.
+- PowerShell 환경에서는 한글 `issue`/`PR` 본문을 stdin이나 here-string 파이프로 직접 넘기지 않는다.
+- 한글 본문이 필요하면 UTF-8로 저장된 파일을 만들고 `gh ... --body-file <utf8-file>`처럼 파일 기반으로 전달한다.
+- 본문이 `??`처럼 깨져 올라갔으면 인코딩 문제로 보고, 같은 내용을 UTF-8 파일 기반으로 다시 업로드한다.
 
 ## 이슈 생성 기준
 - 프로젝트 코드 관련 이슈는 대상 코드 repo의 GitHub issue template을 따른다.
@@ -153,6 +182,7 @@ wiki 로컬 main과 origin/main이 다르지만, 현재 상태에서는 main 전
 
 ## wiki 변경 이슈 template
 - wiki 저장소 변경 이슈는 `.github/ISSUE_TEMPLATE/wiki-change-template.md`를 기준으로 작성한다.
+- 규칙/가이드/운영 문서 변경 이슈 제목은 기본적으로 `docs: <주제>` 형식을 사용한다.
 - 섹션 순서는 `배경 -> 목적 -> 작업 범위 -> 확인 기준 -> 비고`를 기본으로 사용한다.
 - `배경`에는 왜 이 변경이 필요한지와 현재 혼선 또는 누락을 짧게 적는다.
 - `목적`에는 이번 변경으로 만들고 싶은 최종 상태를 적는다.
@@ -268,7 +298,7 @@ wiki 로컬 main과 origin/main이 다르지만, 현재 상태에서는 main 전
 - 예: `wiki-sync-workflow`, `history-panel-docs`, `round-summary-records`
 
 ## LLM publish 절차
-1. 프로젝트 브랜치 PR 완료와 사용자 wiki 등록 요청을 확인한다.
+1. 프로젝트 브랜치 PR 완료 또는 현재 완료 작업 기준이 정리된 상태에서 사용자 wiki 등록 요청을 확인한다. `지금 완료된 작업 wiki에 등록해줘.` 같은 짧은 요청도 여기에 포함한다.
 2. wiki 로컬 `main`과 `origin/main`이 같은지 다시 확인한다.
 3. wiki 반영 브랜치는 wiki 저장소에서 생성한다. 프로젝트 저장소에서 같은 이름의 wiki 반영 브랜치를 만들지 않는다.
    - 기본 형식: `docs/<topic-slug>`
@@ -276,6 +306,7 @@ wiki 로컬 main과 origin/main이 다르지만, 현재 상태에서는 main 전
 4. `<topic-slug>`는 위 slug 규칙을 따른다.
 5. 프로젝트 PR 반영이면 위 체크리스트 기준으로 wiki 문서를 갱신한다.
 6. 변경 요약, `PR` 제목/본문, 관련 `issue` 초안이 필요하면 위 언어 규칙과 `PR 제목 규칙` / `PR 본문 템플릿`에 따라 한글로 정리한다.
+   - PowerShell에서는 한글 본문을 stdin으로 넘기지 않고 UTF-8 파일 기반으로 작성한다.
 7. 변경 요약을 제시하고 사용자 동의를 받은 뒤 커밋한다.
 8. PR용 요약을 정리하고 사용자 동의를 받은 뒤 push / PR을 진행한다.
 9. wiki `main` 머지도 사용자 동의와 검토를 전제로 진행한다.
