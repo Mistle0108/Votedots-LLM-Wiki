@@ -2,13 +2,46 @@
 title: Wiki Log
 type: log
 status: active
-updated: 2026-04-21
+updated: 2026-04-22
 tags:
   - wiki
   - log
 ---
 
 # log
+
+## [2026-04-22] update | formalize wiki sync check and project-session workflow
+- updated: `AGENTS.md`
+- updated: `wiki/AGENTS.md`
+- updated: `wiki/Home/README.md`
+- updated: `wiki/Home/Wiki-Usage-Guide.md`
+- updated: `wiki/Home/Wiki-Operating-Rules.md`
+- updated: `wiki/log.md`
+- note: wiki를 근거로 사용자 명령을 수행하기 전 로컬 wiki와 `origin/main` 일치 여부를 확인하는 규칙, 프로젝트 저장소 세션에서 wiki를 참조하는 운영 방식, 프로젝트 PR 완료 후 wiki 전용 브랜치와 PR로 반영하는 절차를 명문화
+
+## [2026-04-22] update | prefer git object path reading for committed Korean markdown
+- updated: `AGENTS.md`
+- updated: `wiki/AGENTS.md`
+- updated: `wiki/Home/Wiki-Operating-Rules.md`
+- updated: `wiki/log.md`
+- note: PowerShell 인코딩 문제로 한글 문서가 깨질 수 있으므로, 커밋된 Markdown 원문은 기본적으로 `git show <ref>:<path>`로 읽고 미커밋 변경만 fallback으로 처리하는 규칙과 `AGENTS.md` / `wiki/AGENTS.md` 역할 분리를 명문화
+
+## [2026-04-22] update | simplify wiki branch naming rules
+- updated: `wiki/AGENTS.md`
+- updated: `wiki/Home/README.md`
+- updated: `wiki/Home/Wiki-Usage-Guide.md`
+- updated: `wiki/Home/Wiki-Operating-Rules.md`
+- updated: `wiki/log.md`
+- note: wiki 반영 브랜치 규칙을 문서/운영 규칙 수정용 `docs/<topic-slug>`와 프로젝트 PR 반영용 `pr/<project-pr-number>-<topic-slug>` 두 가지로 단순화
+
+## [2026-04-22] update | clarify wiki branch creation repo
+- updated: `AGENTS.md`
+- updated: `wiki/AGENTS.md`
+- updated: `wiki/Home/README.md`
+- updated: `wiki/Home/Wiki-Usage-Guide.md`
+- updated: `wiki/Home/Wiki-Operating-Rules.md`
+- updated: `wiki/log.md`
+- note: 프로젝트 세션에서 반영 범위를 정리하더라도, wiki 반영 브랜치 생성과 wiki commit/PR/merge는 모두 wiki 저장소에서 진행한다는 규칙을 추가함
 
 ## [2026-04-22] update | wiki usage guide added
 - added: `wiki/Home/Wiki-Usage-Guide.md`
@@ -195,17 +228,17 @@ tags:
 - updated: `wiki/index.md`
 - result: Windows Docker는 설치돼 있지만 WSL integration 비활성 + `.env` 미준비로 실제 compose/health 검증은 완료하지 못함
 ## [2026-04-21] restructure | migrate wiki to document-first structure
-- changed: top-level wiki structure from  1-Overview/02-Current-State/03-System-Reference/04-Work-Tracking/05-Development-Record/06-Operations/07-Sources
-  to  1-Project/02-Architecture/03-Status/04-Records/05-Sources
+- changed: top-level wiki structure from 1-Overview/02-Current-State/03-System-Reference/04-Work-Tracking/05-Development-Record/06-Operations/07-Sources
+  to 1-Project/02-Architecture/03-Status/04-Records/05-Sources
 - moved: existing status, architecture, records, and sources documents into the new folders
 - updated: wiki/Home/README.md, wiki/index.md, wiki/AGENTS.md
-- rewritten: section root docs for  1-Project,  2-Architecture,  3-Status,  4-Records,  5-Sources
+- rewritten: section root docs for 1-Project, 2-Architecture, 3-Status, 4-Records, 5-Sources
 - updated: wikilinks across wiki markdown files to match the new paths
 - note: detailed record/source subdocuments were kept and linked into the new structure
 ## [2026-04-21] normalize | align records and source subdocs to new structure
 - rewritten: wiki/04-Records/Worklog/README.md, wiki/04-Records/Issues/README.md, wiki/04-Records/Decisions/README.md
 - rewritten: wiki/05-Sources/issues/README.md, wiki/05-Sources/prs/README.md
-- updated: subfolder AGENTS.md files under  4-Records and  5-Sources
+- updated: subfolder AGENTS.md files under 4-Records and 5-Sources
 - normalized: lingering development-record tags and old link labels inside record detail documents
 - note: detailed worklog / issue / decision / source pages were kept, with only naming and link cleanup applied
 ## [2026-04-21] add | architecture data-flow document

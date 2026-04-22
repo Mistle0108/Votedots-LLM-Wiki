@@ -2,7 +2,7 @@
 title: Home
 type: home
 status: active
-updated: 2026-04-21
+updated: 2026-04-22
 tags:
   - wiki
   - home
@@ -14,10 +14,16 @@ tags:
 이 wiki는 Votedots 프로젝트의 공식 문서, 산출물, 개발 기록 저장소다.  
 작업 현황은 별도 보드가 아니라 공식 문서를 읽었을 때 자연스럽게 파악되도록 유지한다.
 
+## 사용 전 확인
+- wiki를 기준으로 현재 상태, 다음 작업, 반영 범위를 말하기 전에는 먼저 wiki 로컬 `main`과 `origin/main`이 같은지 확인한다.
+- 프로젝트 작업은 프로젝트 저장소 세션에서 진행하고, wiki는 같은 세션에서 로컬 참조 문서로 읽는다.
+- 원격 최신 확인이 불가능하거나 로컬/원격이 다르면 최신이라고 단정하지 말고, 실제 사용 기준 `branch + commit`을 먼저 밝힌다.
+
 ## 현재 기준
 | 항목 | 값 |
 | --- | --- |
 | 코드 기준 커밋 | `Votedots main@31d22b3535627b3a0a56ea1cf9e41411475f72fd` |
+| wiki 사용 원칙 | 로컬 `main`과 `origin/main` 일치 확인 후 읽기 |
 | 프로젝트 정의 문서 | [[wiki/01-Project/README|01-Project]] |
 | 구조 문서 | [[wiki/02-Architecture/System-Reference|System Reference]] |
 | 흐름 문서 | [[wiki/02-Architecture/Data-Flow|Data Flow]] |
@@ -30,14 +36,15 @@ tags:
 | 사용 가이드 문서 | [[wiki/Home/Wiki-Usage-Guide|Wiki Usage Guide]] |
 
 ## 읽는 순서
-1. [[wiki/index|index]]
-2. [[wiki/Home/README|Home]]
-3. [[wiki/03-Status/Current-State|Current State]]
-4. [[wiki/03-Status/Next-Work|Next Work]]
-5. [[wiki/02-Architecture/System-Reference|System Reference]]
-6. [[wiki/02-Architecture/Data-Flow|Data Flow]]
-7. [[wiki/04-Records/README|04-Records]]
-8. [[wiki/05-Sources/README|05-Sources]]
+1. wiki 로컬 `main`과 `origin/main` 최신 상태를 확인한다.
+2. [[wiki/index|index]]
+3. [[wiki/Home/README|Home]]
+4. [[wiki/03-Status/Current-State|Current State]]
+5. [[wiki/03-Status/Next-Work|Next Work]]
+6. [[wiki/02-Architecture/System-Reference|System Reference]]
+7. [[wiki/02-Architecture/Data-Flow|Data Flow]]
+8. [[wiki/04-Records/README|04-Records]]
+9. [[wiki/05-Sources/README|05-Sources]]
 
 ## 질문별 진입점
 | 확인 목적 | 먼저 볼 문서 | 비고 |
@@ -50,6 +57,13 @@ tags:
 | 왜 이렇게 됐는가 | [[wiki/04-Records/README|04-Records]] | 작업, 문제, 결정 이력 확인 |
 | 근거가 무엇인가 | [[wiki/05-Sources/README|05-Sources]] | repo / issue / PR 사실 확인 |
 | 운영 기준이 무엇인가 | [[wiki/Home/Wiki-Operating-Rules|Wiki Operating Rules]] | 팀 운영 기준 확인 |
+
+## wiki 반영 시작점
+- 프로젝트 브랜치 PR이 완료되고 사용자가 wiki 등록을 요청하면, 같은 프로젝트 세션에서 반영 범위를 먼저 정리한다.
+- 반영 범위 정리는 프로젝트 세션에서 하더라도, 실제 wiki 반영 브랜치 생성과 wiki git 작업은 wiki 저장소에서 진행한다.
+- wiki 반영 직전에는 wiki 로컬 `main`과 `origin/main`이 같은지 다시 확인한다.
+- wiki 반영 브랜치는 규칙/가이드 수정이면 `docs/<topic-slug>`를 사용하고, 특정 프로젝트 PR에 대응하는 반영이면 `pr/<project-pr-number>-<topic-slug>` 형식을 사용한다.
+- 문서 수정 후에는 사용자 동의를 받아 커밋, PR, main 머지 순으로 진행한다.
 
 ## 참고 문서
 - 팀 공유용 운영 설명서: [[wiki/Home/Wiki-Operating-Rules|Wiki Operating Rules]]

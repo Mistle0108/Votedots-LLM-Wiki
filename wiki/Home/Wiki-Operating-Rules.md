@@ -2,7 +2,7 @@
 title: Wiki Operating Rules
 type: wiki-operating-rules
 status: active
-updated: 2026-04-21
+updated: 2026-04-22
 tags:
   - wiki
   - home
@@ -17,6 +17,7 @@ tags:
   - wiki를 어디서부터 읽을지
   - 어떤 문서를 어디에 써야 할지
   - 기준 커밋 기반으로 어떻게 갱신하고 publish할지
+- 추가로 프로젝트 저장소 세션에서 wiki를 어떻게 참조하고 반영 요청까지 이어갈지 명확히 한다.
 
 ## 저장소 구조
 ```text
@@ -29,13 +30,17 @@ Output/   # 세션 결과, 임시 분석, 보고 초안
 - `/README.md`
   - 저장소 첫 화면용 짧은 안내문
 - `/AGENTS.md`
-  - LLM 전역 행동 규칙
+  - 저장소 루트 진입 규칙과 전역 행동 규칙
 - `/wiki/AGENTS.md`
-  - `wiki/` 내부 작업 규칙
+  - `wiki/` 내부 작업 상세 규칙
 - `/wiki/Home/README.md`
   - wiki 진입점
 - `/wiki/Home/Wiki-Operating-Rules.md`
   - 팀 공유용 운영 설명서
+- 역할 분리 원칙:
+  - 루트 `AGENTS.md`는 저장소 전역 규칙, 진입 순서, 읽기 기본값을 다룬다.
+  - `wiki/AGENTS.md`는 wiki 문서 읽기/쓰기/publish의 상세 절차를 다룬다.
+  - 두 파일은 둘 다 유지하되, 같은 상세 규칙을 중복 복사하지 않는다.
 
 ## 전제
 - 저장소 구조 자체는 위 형태로 유지한다.
@@ -87,6 +92,17 @@ code@commit
 - 기준 진실은 항상 `code@commit`이다.
 - 미커밋 변경은 baseline에 포함하지 않는다.
 - 같은 질문은 같은 `commit` 기준이면 같은 답이 나와야 한다.
+- 사용자의 명령을 wiki 기준으로 수행하기 전에는 먼저 wiki 로컬 저장소와 원격 `origin/main`의 최신 상태가 같은지 확인한다.
+- 가능하면 `git fetch origin main` 후 로컬 `main`과 `origin/main`을 비교한다.
+- 원격 확인이 불가능하거나 로컬/원격이 다르면 최신이라고 단정하지 말고, 제한과 실제 사용 기준 `branch + commit`을 먼저 밝힌다.
+
+## 문서 원문 읽기 기본값
+- 커밋된 한글 Markdown 원문은 기본적으로 파일 시스템 직접 읽기보다 Git 객체 경로 읽기를 우선한다.
+- 기본 형식은 `git show <ref>:<repo-relative-path>`다.
+- `<ref>`가 불명확하면 먼저 이번 판단의 기준 `branch + commit`을 확정한다.
+- 이유: 현재 PowerShell 출력 인코딩 환경에서는 한글 문서가 깨질 수 있으므로, 커밋된 원문은 Git 객체에서 직접 읽는 편이 더 안정적이다.
+- 미커밋 변경, 신규 파일, 워킹트리 상태 확인이 필요하면 파일 시스템 읽기, `git diff`, `git status`를 fallback으로 사용한다.
+- 커밋 기준 본문과 워킹트리 본문을 함께 사용했으면 둘을 구분해서 설명한다.
 
 ## raw / source 규칙
 - `raw/`는 원본 또는 원본 참조 계층이다.
@@ -105,6 +121,14 @@ code@commit
 - 이 파일에는 `execution_path`만 기록한다.
 - `{repo}.local.md`는 gitignored 파일이므로 원격 저장소에 올라가지 않는다.
 - LLM이 repo ingest를 수행할 때는 먼저 이 파일을 확인하고, 없으면 세션 입력으로 경로를 받는다.
+
+## 프로젝트 세션 연계 규칙
+- 기본 작업 컨텍스트는 프로젝트 저장소 세션이다.
+- 사용자는 프로젝트 세션에서 로컬 wiki를 읽고 현재 상태, 다음 작업, 근거 문서를 확인한다.
+- 프로젝트 코드 확인, 구현, 검증은 프로젝트 저장소에서 수행하고, wiki 저장소는 문서 반영 브랜치와 공유 문서 관리 용도로만 사용한다.
+- wiki 반영 브랜치 생성, wiki 문서 commit, wiki PR 생성과 merge는 모두 wiki 저장소에서 수행한다. 프로젝트 저장소에서는 반영 범위만 정리하고 실제 git 작업은 하지 않는다.
+- 프로젝트 세션에서 여러 요청을 이어 처리할 때도, 새 요청 시작 전과 중요한 판단 단계 전에는 wiki 로컬/원격 일치 여부를 다시 확인한다.
+- 프로젝트 작업이 끝나고 브랜치 PR이 완료되면, 사용자는 같은 프로젝트 세션에서 현재 완료된 작업에 대한 wiki 등록을 요청한다.
 
 ## 작성 규칙
 - 새 페이지보다 기존 페이지 업데이트를 우선한다.
@@ -151,22 +175,24 @@ commit:       # 근거 commit hash
   - 같은 주제의 작은 수정은 한 번의 로그 엔트리로 묶음
 
 ## ingest 순서
-1. 대상 `repo / branch / commit hash` 확정
-2. raw 참조 카드 갱신 또는 확인
-3. 코드 / issue / PR 읽기
-4. `05-Sources` 갱신
-5. 필요 시 `02-Architecture` 갱신
-6. 필요 시 `03-Status` 갱신
-7. 필요 시 `04-Records` 갱신
-8. 필요 시 `index.md` 갱신
-9. 의미 있는 업데이트 단위면 `log.md` 기록
+1. wiki 로컬 `main`과 `origin/main` 최신 상태를 확인
+2. 대상 `repo / branch / commit hash` 확정
+3. raw 참조 카드 갱신 또는 확인
+4. 코드 / issue / PR 읽기
+5. `05-Sources` 갱신
+6. 필요 시 `02-Architecture` 갱신
+7. 필요 시 `03-Status` 갱신
+8. 필요 시 `04-Records` 갱신
+9. 필요 시 `index.md` 갱신
+10. 의미 있는 업데이트 단위면 `log.md` 기록
 
 ## LLM 기본 읽기 순서
 - 사용자가 `wiki 읽고 내용 확인해`, `wiki 보고 정리해`, `wiki 기준으로 말해줘`라고 하면 아래 순서로 먼저 읽는다.
-  1. `wiki/index.md`
-  2. `wiki/Home/README.md`
-  3. `wiki/03-Status/Current-State.md`
-  4. `wiki/03-Status/Next-Work.md`
+  1. wiki 로컬 `main`과 `origin/main` 최신 상태를 확인한다.
+  2. `wiki/index.md`
+  3. `wiki/Home/README.md`
+  4. `wiki/03-Status/Current-State.md`
+  5. `wiki/03-Status/Next-Work.md`
 - 그 다음 질문 목적에 따라 확장한다.
   - 프로젝트 정의 질문:
     1. `wiki/01-Project/README.md`
@@ -188,13 +214,20 @@ commit:       # 근거 commit hash
 - `05-Sources`와 `04-Records`는 재사용 가치가 있을 때만 선별 승격한다.
 
 ## publish 규칙
-1. 기준 커밋 기반으로 wiki 내용을 먼저 작성 / 갱신한다.
-2. 변경 내용을 짧게 요약한다.
-3. `커밋할까?`라고 사용자 동의를 받는다.
-4. 동의가 있으면 로컬 커밋을 진행한다.
-5. 커밋 후 PR용 변경 요약을 정리한다.
-6. `PR 요청할까?`라고 사용자 동의를 받는다.
-7. 동의가 있을 때만 push / PR 생성을 진행한다.
+1. 프로젝트 브랜치 PR이 완료되고 사용자가 wiki 등록을 요청하면, 같은 프로젝트 세션에서 기준 프로젝트 PR/merge commit과 반영 범위를 먼저 정리한다.
+2. wiki 반영 직전에는 wiki 로컬 `main`과 `origin/main`이 같은지 다시 확인한다.
+3. wiki 반영 브랜치 생성, wiki 문서 commit, wiki PR 생성과 merge는 모두 wiki 저장소에서 수행한다. 프로젝트 저장소에서 wiki 반영 브랜치를 만들지 않는다.
+4. wiki 반영은 direct push가 아니라 `branch + PR` 기준으로 운영한다.
+5. wiki 반영 브랜치는 기본적으로 `docs/<topic-slug>`를 사용한다.
+6. 특정 프로젝트 PR에 대응하는 반영이면 `pr/<project-pr-number>-<topic-slug>` 형식을 사용한다.
+7. 기준 커밋 기반으로 wiki 내용을 먼저 작성 / 갱신한다.
+8. 변경 내용을 짧게 요약한다.
+9. `커밋할까?`라고 사용자 동의를 받는다.
+10. 동의가 있으면 로컬 커밋을 진행한다.
+11. 커밋 후 PR용 변경 요약을 정리한다.
+12. `PR 요청할까?`라고 사용자 동의를 받는다.
+13. 동의가 있을 때만 push / PR 생성을 진행한다.
+14. wiki `main` 머지도 사용자 동의와 검토를 전제로 진행한다.
 - `log.md` 기록과 git commit은 별개다.
 - `log.md`는 의미 있는 wiki 변경을 남기고, git commit은 사용자 동의 후에만 진행한다.
 
@@ -202,4 +235,4 @@ commit:       # 근거 commit hash
 - `05-Sources`에는 사실만 적는다.
 - `03-Status`에는 현재 사실과 다음 행동을 적는다.
 - `04-Records`에는 작업, 문제, 결정을 축적한다.
-- wiki는 항상 `code@commit` 기준으로 읽고 쓴다.
+- wiki는 항상 `code@commit` 기준으로 읽고 쓰며, 사용 전에는 로컬 `main`과 `origin/main` 일치 여부를 확인한다.
