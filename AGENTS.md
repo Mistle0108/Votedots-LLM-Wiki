@@ -115,6 +115,8 @@ code@commit      # 특정 branch + commit에서 실제로 확인한 코드
 - 영향이 없어 사용자 문서를 수정하지 않으면 그 이유를 변경 요약이나 PR 본문에 짧게 남긴다.
 
 ## GitHub 작성 규칙
+- PR이 같은 저장소의 이슈를 완전히 해결하면 PR 본문 `비고`에 `Closes #<번호>`를 적는다.
+- 이슈를 완전히 닫지 않고 관련만 있거나 부분 반영이면 `Closes` 대신 `Refs #<번호>`를 적는다.
 - 프로젝트 코드 관련 `issue`는 대상 코드 repo의 GitHub issue template을 따른다.
 - wiki 저장소 자체 `issue`는 wiki 저장소 전용 변경 이슈 template을 따른다.
 - 서로 다른 저장소의 issue template을 혼용하지 않는다.
