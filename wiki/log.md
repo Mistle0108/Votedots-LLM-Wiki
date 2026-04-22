@@ -2,13 +2,27 @@
 title: Wiki Log
 type: log
 status: active
-updated: 2026-04-22
+updated: 2026-04-23
 tags:
   - wiki
   - log
 ---
 
 # log
+
+## [2026-04-23] update | move project-session wiki bootstrap to project-local config
+- updated: `AGENTS.md`
+- updated: `README.md`
+- updated: `raw/repos/AGENTS.md`
+- updated: `raw/repos/_repo-local-card.template.md`
+- updated: `wiki/AGENTS.md`
+- updated: `wiki/Home/README.md`
+- updated: `wiki/Home/Project-Session-Setup.md`
+- updated: `wiki/Home/Wiki-Operating-Rules.md`
+- updated: `wiki/Home/Wiki-Usage-Guide.md`
+- updated: `wiki/index.md`
+- updated: `wiki/log.md`
+- note: 프로젝트 세션의 local wiki 경로 bootstrap 기준을 wiki repo 내부 `raw/repos/{repo}.local.md`에서 프로젝트 저장소의 `./.local/wiki-repo.yml`로 옮겼다. 현재 shell별 `wiki_repo_paths.wsl` / `wiki_repo_paths.windows` 슬롯에 경로를 저장하고, 한 번 확인한 값을 이후 기본값으로 재사용하도록 정리했다. `raw/repos/{repo}.local.md`는 `execution_path` 중심의 보조 로컬 메타데이터 카드로 역할을 축소했다.
 
 ## [2026-04-22] update | guard against PowerShell PR body mojibake
 - updated: `AGENTS.md`

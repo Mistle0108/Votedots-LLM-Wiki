@@ -75,9 +75,11 @@ code@commit      # 특정 branch + commit에서 실제로 확인한 코드
 ## 프로젝트 세션 연계 규칙
 - 프로젝트 세션에서 로컬 wiki 저장소를 참조하는 것을 기본 환경으로 본다.
 - 프로젝트 작업을 위해 wiki를 읽거나 wiki 반영이 필요할 때는 프로젝트 저장소의 `execution_path` 기준 세션에서 진행한다.
-- 프로젝트 세션에서 로컬 wiki 저장소 경로를 확인할 때는 먼저 `raw/repos/{repo}.local.md`의 `wiki_repo_path`를 본다.
-- `wiki_repo_path`가 있고 현재 세션에서 접근 가능하면 그 경로를 이번 세션의 기본 wiki 경로로 고정한다.
-- `wiki_repo_path`가 없거나 현재 세션에서 접근할 수 없으면 사용자에게 경로를 한 번만 확인한 뒤, 그 값을 `raw/repos/{repo}.local.md`에 저장하고 이후 기본값으로 사용한다.
+- 프로젝트 세션에서 로컬 wiki 저장소 경로를 확인할 때는 먼저 프로젝트 저장소의 `./.local/wiki-repo.yml`을 본다.
+- 현재 shell이 WSL이면 `wiki_repo_paths.wsl`, Windows shell이면 `wiki_repo_paths.windows`를 본다.
+- 같은 세션에서 이미 확인한 wiki repo 경로가 있으면 다시 묻지 않고 그 값을 계속 사용한다.
+- 현재 shell 슬롯에 경로가 있고 현재 세션에서 접근 가능하면 그 경로를 이번 세션의 기본 wiki 경로로 고정한다.
+- 경로가 없거나 현재 세션에서 접근할 수 없으면 사용자에게 경로를 한 번만 확인한 뒤, 그 값을 같은 파일의 현재 shell 슬롯에 저장하고 이후 기본값으로 사용한다.
 - 프로젝트 세션의 shell에서 보이는 경로를 써야 한다. 예를 들어 프로젝트 `execution_path`가 WSL 경로면 wiki 경로도 WSL에서 보이는 경로를 쓴다.
 - 환경 변수나 shell 초기화 파일 설정은 필수로 두지 않는다.
 - 프로젝트 세션에서는 로컬 wiki를 참조 문서로 읽고, 사용자의 각 명령이나 중요한 판단 단계 전에 wiki 로컬/원격 일치 여부를 다시 확인한다.
