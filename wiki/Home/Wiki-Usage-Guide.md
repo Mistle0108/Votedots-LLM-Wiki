@@ -25,6 +25,18 @@ tags:
 - wiki를 근거로 사용자 명령을 수행하기 전에는 먼저 wiki 로컬 `main`과 `origin/main`이 같은지 확인한다.
 - 작업이 길어지거나 새로운 요청으로 넘어갈 때도 wiki 로컬/원격 일치 여부를 다시 확인한다.
 
+## wiki 동기화 확인 기준
+- 기본 확인 순서는 `git fetch origin main` -> `git rev-parse main` -> `git rev-parse origin/main` 이다.
+- 두 해시가 같으면 `wiki local main == origin/main`으로 보고, `main@<hash>`를 기준 commit으로 사용한다.
+- `git fetch` 실패, `main` 부재, 해시 불일치면 최신이라고 단정하지 않고 그 제한과 현재 기준 commit을 먼저 말한다.
+- 자동 `pull`, `merge`, `rebase`는 하지 않고 사용자와 기준 상태를 먼저 맞춘다.
+
+## wiki 브랜치 이름 기준
+- 규칙/가이드/운영 문서 수정은 `docs/<topic-slug>`를 사용한다.
+- 특정 프로젝트 PR 반영은 `pr/<project-pr-number>-<topic-slug>`를 사용한다.
+- `<topic-slug>`는 소문자 영어, 숫자, 하이픈만 사용하고 kebab-case 2~6단어 정도로 유지한다.
+- `docs`, `pr`, `branch`, `update`, `misc`, 날짜, PR 번호처럼 prefix에 이미 있는 정보는 slug에 반복하지 않는다.
+
 ## 이 wiki에서 먼저 보면 되는 문서
 - [[wiki/Home/README|Home]]
   - wiki 진입점, 기준 커밋, 읽는 순서를 확인한다.
@@ -97,7 +109,10 @@ Current-State, Next-Work, 필요한 Sources/Records까지 반영해줘.
 - 기대 결과는 아래 순서를 따른다.
   - wiki 로컬/원격 최신 상태 확인
   - 기준 branch + commit 확인
+  - `Current-State`, `Next-Work`, 관련 `05-Sources`, 필요 시 `04-Records` 확인
   - 필요한 raw/source/status/records 반영
+  - 새 문서 추가/삭제/이름 변경이 있으면 `index.md` 반영
+  - 의미 있는 변경이면 `log.md` 기록
   - 변경 요약 제시
   - 사용자 승인 후 커밋
   - 사용자 승인 후 PR 요청

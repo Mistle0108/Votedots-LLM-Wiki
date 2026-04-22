@@ -51,27 +51,17 @@ code@commit      # 특정 branch + commit에서 실제로 확인한 코드
 - 문서 해석 기준은 현재 워킹트리가 아니라 확정된 커밋 상태다.
 - 미커밋 변경은 baseline에 포함하지 않는다.
 - 같은 질문은 같은 `commit` 기준이면 같은 답이 나와야 한다.
-- 사용자의 명령을 wiki 기준으로 수행하기 전에는 먼저 wiki 로컬 저장소와 원격 `origin/main`의 최신 상태가 같은지 확인한다.
-- 가능하면 `git fetch origin main` 후 로컬 `main`과 `origin/main`을 비교한다.
-- 원격 확인이 불가능하거나 두 저장소가 일치하지 않으면, 최신이라고 단정하지 말고 제한과 실제 사용 기준 `branch + commit`을 먼저 밝힌다.
+- 사용자의 명령을 wiki 기준으로 수행하기 전에는 wiki 로컬 `main`과 `origin/main` 일치 여부를 먼저 확인한다.
+- 동기화 확인의 상세 명령과 실패 시 처리 원칙은 `wiki/AGENTS.md`를 따른다.
 
 ## 문서 원문 읽기 기본값
-- 커밋된 한글 Markdown 원문은 기본적으로 파일 시스템 직접 읽기보다 Git 객체 경로 읽기를 우선한다.
-- 기본 형식은 `git show <ref>:<repo-relative-path>`다.
-- `<ref>`가 불명확하면 먼저 이번 판단의 기준 `branch + commit`을 확정한다.
-- 이유: 현재 PowerShell 출력 인코딩 환경에서는 한글 문서가 깨질 수 있으므로, 커밋된 원문은 Git 객체에서 직접 읽는 편이 더 안정적이다.
-- 미커밋 변경, 신규 파일, 워킹트리 상태 확인이 필요하면 파일 시스템 읽기, `git diff`, `git status`를 fallback으로 사용한다.
-- 커밋 기준 본문과 워킹트리 본문을 함께 읽었으면 둘을 섞어 말하지 말고 구분해서 설명한다.
+- 커밋된 문서는 기본적으로 `git show <ref>:<repo-relative-path>`로 읽는다.
+- 미커밋 변경, 신규 파일, 워킹트리 상태만 `git diff`, `git status`, 파일 시스템 읽기로 보완한다.
+- 세부 fallback 규칙은 `wiki/AGENTS.md`를 따른다.
 
-## raw 운영 규칙
-- 초기 raw 범위는 `repo + issues + PR`이다.
+## raw 원칙
 - `raw/`는 원본 또는 원본 참조 계층이다.
-- `raw/`에는 해석, 판단, 우선순위를 적지 않는다.
-- repo는 읽기 전용으로 참조하고 ingest 기준 `commit hash`를 기록한다.
-- `raw/issues`는 GitHub issue 원문 메타데이터 기준이다.
-- `raw/prs`는 GitHub PR 메타데이터 + merge commit 기준이다.
-- 사용자별 `execution_path`는 shared repo에 커밋하지 않는다.
-- 실제 실행 경로는 gitignored `raw/repos/{repo}.local.md` 또는 세션 입력으로만 받는다.
+- 해석과 우선순위는 `wiki/` 문서에서 다루고, 상세 운영 규칙은 `wiki/AGENTS.md`를 따른다.
 
 ## 프로젝트 세션 연계 규칙
 - 프로젝트 작업을 위해 wiki를 읽거나 wiki 반영이 필요할 때는 프로젝트 저장소의 `execution_path` 기준 세션에서 진행한다.

@@ -96,6 +96,14 @@ code@commit
 - 가능하면 `git fetch origin main` 후 로컬 `main`과 `origin/main`을 비교한다.
 - 원격 확인이 불가능하거나 로컬/원격이 다르면 최신이라고 단정하지 말고, 제한과 실제 사용 기준 `branch + commit`을 먼저 밝힌다.
 
+## wiki 동기화 확인 절차
+1. 기본 명령 순서는 `git fetch origin main` -> `git rev-parse main` -> `git rev-parse origin/main` 이다.
+2. 두 해시가 같으면 `wiki local main == origin/main`으로 본다.
+3. 두 해시가 같으면 `main@<hash>`를 이번 읽기/쓰기 기준으로 확정한다.
+4. `git fetch` 실패, `main` 부재, 두 해시 불일치면 최신이라고 단정하지 않는다.
+5. 이 경우 자동 `pull`, `merge`, `rebase`를 하지 않고, 제한과 현재 사용 가능한 기준 `branch + commit`만 먼저 밝힌다.
+6. 긴 작업 중 새 요청 시작 전이나 중요한 판단 직전에는 이 절차를 다시 수행한다.
+
 ## 문서 원문 읽기 기본값
 - 커밋된 한글 Markdown 원문은 기본적으로 파일 시스템 직접 읽기보다 Git 객체 경로 읽기를 우선한다.
 - 기본 형식은 `git show <ref>:<repo-relative-path>`다.
@@ -129,6 +137,23 @@ code@commit
 - wiki 반영 브랜치 생성, wiki 문서 commit, wiki PR 생성과 merge는 모두 wiki 저장소에서 수행한다. 프로젝트 저장소에서는 반영 범위만 정리하고 실제 git 작업은 하지 않는다.
 - 프로젝트 세션에서 여러 요청을 이어 처리할 때도, 새 요청 시작 전과 중요한 판단 단계 전에는 wiki 로컬/원격 일치 여부를 다시 확인한다.
 - 프로젝트 작업이 끝나고 브랜치 PR이 완료되면, 사용자는 같은 프로젝트 세션에서 현재 완료된 작업에 대한 wiki 등록을 요청한다.
+
+## 프로젝트 PR wiki 반영 체크리스트
+1. 기준 프로젝트 `repo / branch / PR 번호 / merge commit`을 확인한다.
+2. 이번 PR로 바뀐 기능과 모듈에 대응하는 `05-Sources/` 문서를 확인하거나 갱신한다.
+3. 완료된 사실과 현재 기준 상태를 `03-Status/Current-State.md`에 반영한다.
+4. 다음 우선 작업, 선행조건, 남은 gap 변화를 `03-Status/Next-Work.md`에 반영한다.
+5. 결정, 이슈, 작업 경과를 남길 가치가 있으면 `04-Records/`를 갱신한다.
+6. 새 문서 추가, 삭제, 이름 변경이 있으면 `index.md`를 갱신한다.
+7. 의미 있는 반영 단위면 `log.md`를 기록한다.
+8. raw PR/source card를 새로 확보해야 하면 `raw/prs/`와 관련 source 문서를 함께 확인한다.
+
+## `<topic-slug>` 규칙
+- 소문자 영어, 숫자, 하이픈만 사용한다.
+- kebab-case로 적고 2~6단어 정도로 유지한다.
+- `docs`, `pr`, `branch`, `update`, `misc`, 날짜, PR 번호처럼 prefix에서 이미 드러나는 정보는 slug에 반복하지 않는다.
+- 너무 포괄적인 이름보다 반영 주제나 기능 단위를 직접 드러내는 명사를 우선한다.
+- 예: `wiki-sync-workflow`, `history-panel-docs`, `round-summary-records`
 
 ## 작성 규칙
 - 새 페이지보다 기존 페이지 업데이트를 우선한다.
@@ -220,14 +245,15 @@ commit:       # 근거 commit hash
 4. wiki 반영은 direct push가 아니라 `branch + PR` 기준으로 운영한다.
 5. wiki 반영 브랜치는 기본적으로 `docs/<topic-slug>`를 사용한다.
 6. 특정 프로젝트 PR에 대응하는 반영이면 `pr/<project-pr-number>-<topic-slug>` 형식을 사용한다.
-7. 기준 커밋 기반으로 wiki 내용을 먼저 작성 / 갱신한다.
-8. 변경 내용을 짧게 요약한다.
-9. `커밋할까?`라고 사용자 동의를 받는다.
-10. 동의가 있으면 로컬 커밋을 진행한다.
-11. 커밋 후 PR용 변경 요약을 정리한다.
-12. `PR 요청할까?`라고 사용자 동의를 받는다.
-13. 동의가 있을 때만 push / PR 생성을 진행한다.
-14. wiki `main` 머지도 사용자 동의와 검토를 전제로 진행한다.
+7. `<topic-slug>`는 위 slug 규칙을 따른다.
+8. 프로젝트 PR 반영이면 위 체크리스트 기준으로 wiki 내용을 먼저 작성 / 갱신한다.
+9. 변경 내용을 짧게 요약한다.
+10. `커밋할까?`라고 사용자 동의를 받는다.
+11. 동의가 있으면 로컬 커밋을 진행한다.
+12. 커밋 후 PR용 변경 요약을 정리한다.
+13. `PR 요청할까?`라고 사용자 동의를 받는다.
+14. 동의가 있을 때만 push / PR 생성을 진행한다.
+15. wiki `main` 머지도 사용자 동의와 검토를 전제로 진행한다.
 - `log.md` 기록과 git commit은 별개다.
 - `log.md`는 의미 있는 wiki 변경을 남기고, git commit은 사용자 동의 후에만 진행한다.
 

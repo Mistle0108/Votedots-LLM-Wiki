@@ -43,6 +43,14 @@ log.md            # wiki 운영 이력
 - 미커밋 변경, 신규 파일, 워킹트리 상태 확인이 필요하면 파일 시스템 읽기, `git diff`, `git status`를 fallback으로 사용한다.
 - 커밋 기준 본문과 워킹트리 본문을 함께 읽었으면 둘을 섞어 말하지 말고 구분해서 설명한다.
 
+## wiki 동기화 확인 절차
+1. 기본 명령 순서는 `git fetch origin main` -> `git rev-parse main` -> `git rev-parse origin/main` 이다.
+2. 두 해시가 같으면 `wiki local main == origin/main`으로 본다.
+3. 두 해시가 같으면 `main@<hash>`를 이번 읽기/쓰기 기준으로 확정한다.
+4. `git fetch` 실패, `main` 부재, 두 해시 불일치면 최신이라고 단정하지 않는다.
+5. 이 경우 자동 `pull`, `merge`, `rebase`를 하지 않고, 제한과 현재 사용 가능한 기준 `branch + commit`만 먼저 밝힌다.
+6. 긴 작업 중 새 사용자 명령이나 중요한 판단 직전에는 이 절차를 다시 수행한다.
+
 ## 프로젝트 세션 연계 규칙
 - 프로젝트 작업을 위해 wiki를 읽거나 wiki 등록을 준비할 때는 프로젝트 저장소의 `execution_path` 기준 세션에서 진행한다.
 - 프로젝트 세션에서는 로컬 wiki를 참조 문서로 읽고, 각 사용자 명령과 중요한 판단 단계 전에 wiki 로컬/원격 일치 여부를 다시 확인한다.
@@ -95,16 +103,34 @@ log.md            # wiki 운영 이력
 9. 필요 시 `wiki/index.md`를 갱신한다.
 10. 의미 있는 업데이트 단위면 `wiki/log.md`를 기록한다.
 
+## 프로젝트 PR wiki 반영 체크리스트
+1. 기준 프로젝트 `repo / branch / PR 번호 / merge commit`을 확인한다.
+2. 이번 PR로 바뀐 기능과 모듈에 대응하는 `05-Sources/` 문서를 확인하거나 갱신한다.
+3. 완료된 사실과 현재 기준 상태를 `03-Status/Current-State.md`에 반영한다.
+4. 다음 우선 작업, 선행조건, 남은 gap 변화를 `03-Status/Next-Work.md`에 반영한다.
+5. 결정, 이슈, 작업 경과를 남길 가치가 있으면 `04-Records/`를 갱신한다.
+6. 새 문서 추가, 삭제, 이름 변경이 있으면 `index.md`를 갱신한다.
+7. 의미 있는 반영 단위면 `log.md`를 기록한다.
+8. raw PR/source card를 새로 확보해야 하면 `raw/prs/`와 관련 source 문서를 함께 확인한다.
+
+## `<topic-slug>` 규칙
+- 소문자 영어, 숫자, 하이픈만 사용한다.
+- kebab-case로 적고 2~6단어 정도로 유지한다.
+- `docs`, `pr`, `branch`, `update`, `misc`, 날짜, PR 번호처럼 prefix에서 이미 드러나는 정보는 slug에 반복하지 않는다.
+- 너무 포괄적인 이름보다 반영 주제나 기능 단위를 직접 드러내는 명사를 우선한다.
+- 예: `wiki-sync-workflow`, `history-panel-docs`, `round-summary-records`
+
 ## LLM publish 절차
 1. 프로젝트 브랜치 PR 완료와 사용자 wiki 등록 요청을 확인한다.
 2. wiki 로컬 `main`과 `origin/main`이 같은지 다시 확인한다.
 3. wiki 반영 브랜치는 wiki 저장소에서 생성한다. 프로젝트 저장소에서 같은 이름의 wiki 반영 브랜치를 만들지 않는다.
    - 기본 형식: `docs/<topic-slug>`
    - 프로젝트 PR 연계 형식: `pr/<project-pr-number>-<topic-slug>`
-4. 기준 프로젝트 commit과 merge 결과를 바탕으로 wiki 문서를 갱신한다.
-5. 변경 요약을 제시하고 사용자 동의를 받은 뒤 커밋한다.
-6. PR용 요약을 정리하고 사용자 동의를 받은 뒤 push / PR을 진행한다.
-7. wiki `main` 머지도 사용자 동의와 검토를 전제로 진행한다.
+4. `<topic-slug>`는 위 slug 규칙을 따른다.
+5. 프로젝트 PR 반영이면 위 체크리스트 기준으로 wiki 문서를 갱신한다.
+6. 변경 요약을 제시하고 사용자 동의를 받은 뒤 커밋한다.
+7. PR용 요약을 정리하고 사용자 동의를 받은 뒤 push / PR을 진행한다.
+8. wiki `main` 머지도 사용자 동의와 검토를 전제로 진행한다.
 
 ## Current-State 와 Next-Work 차이
 - `Current-State`

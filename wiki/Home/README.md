@@ -63,6 +63,7 @@ tags:
 - 반영 범위 정리는 프로젝트 세션에서 하더라도, 실제 wiki 반영 브랜치 생성과 wiki git 작업은 wiki 저장소에서 진행한다.
 - wiki 반영 직전에는 wiki 로컬 `main`과 `origin/main`이 같은지 다시 확인한다.
 - wiki 반영 브랜치는 규칙/가이드 수정이면 `docs/<topic-slug>`를 사용하고, 특정 프로젝트 PR에 대응하는 반영이면 `pr/<project-pr-number>-<topic-slug>` 형식을 사용한다.
+- 동기화 확인 명령, PR 반영 체크리스트, `<topic-slug>` 규칙의 상세 내용은 `wiki/AGENTS.md`와 `Wiki-Operating-Rules.md`를 따른다.
 - 문서 수정 후에는 사용자 동의를 받아 커밋, PR, main 머지 순으로 진행한다.
 
 ## 참고 문서

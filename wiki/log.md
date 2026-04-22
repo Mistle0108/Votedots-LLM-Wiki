@@ -43,6 +43,15 @@ tags:
 - updated: `wiki/log.md`
 - note: 프로젝트 세션에서 반영 범위를 정리하더라도, wiki 반영 브랜치 생성과 wiki commit/PR/merge는 모두 wiki 저장소에서 진행한다는 규칙을 추가함
 
+## [2026-04-22] update | formalize wiki sync commands and PR reflection checklist
+- updated: `AGENTS.md`
+- updated: `wiki/AGENTS.md`
+- updated: `wiki/Home/README.md`
+- updated: `wiki/Home/Wiki-Usage-Guide.md`
+- updated: `wiki/Home/Wiki-Operating-Rules.md`
+- updated: `wiki/log.md`
+- note: wiki 동기화 확인 절차를 `git fetch origin main` -> `git rev-parse main` -> `git rev-parse origin/main` 기준으로 고정하고, 프로젝트 PR 반영 체크리스트와 `<topic-slug>` 규칙을 명문화함. 루트 `AGENTS.md`는 진입/요약 규칙 중심으로 더 얇게 정리함
+
 ## [2026-04-22] update | wiki usage guide added
 - added: `wiki/Home/Wiki-Usage-Guide.md`
 - updated: `wiki/Home/README.md`
