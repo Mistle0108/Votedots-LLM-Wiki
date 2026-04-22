@@ -1,0 +1,29 @@
+﻿---
+title: Raw PR Sources
+type: raw-pr-index
+status: active
+updated: 2026-04-21
+tags:
+  - raw
+  - prs
+---
+
+# Raw PR Sources
+
+## 臾몄꽌 紐⑹쟻
+??臾몄꽌??`raw/prs`????λ맂 PR 李몄“ 移대뱶 紐⑸줉?대떎.
+
+## 湲곕줉 ?먯튃
+- PR ?먮Ц diff瑜?raw??蹂듭궗?섏? ?딅뒗??
+- `留곹겕 + 理쒖냼 硫뷀??곗씠??+ 湲곗? commit`留?湲곕줉?쒕떎.
+- ?ㅼ젣 ?댁꽍怨??붿빟? `wiki/05-Sources/prs/`???묒꽦?쒕떎.
+
+## GitHub ?쒗뵆由?湲곗?
+- PR 蹂몃Ц ?묒꽦/?붿빟 援ъ“??肄붾뱶 repo??`.github/pull-request-template.md`瑜?湲곗??쇰줈 ?쒕떎.
+- ?뱁엳 ?꾨옒 ?뱀뀡???곗꽑 異붿텧?쒕떎: `愿???댁뒋(Close #)`, `媛쒖슂`, `?묒뾽 踰붿쐞(?좉퇋/?섏젙 ?뚯씪)`, `?뚯뒪????ぉ`.
+
+## ?꾩옱 移대뱶
+- [PR-233](./PR-233-sparse-grid-chunk-rendering.md) - sparse grid + chunk ?뚮뜑留?援ъ“ ?꾪솚.
+- [PR-201](./PR-201-summary-ready-flow.md) - summary ready ?대깽??湲곕컲 寃곌낵 議고쉶 蹂듦뎄.
+- [PR-182](./PR-182-game-entry-and-game-end-observe.md) - 寃뚯엫 李몄뿬 諛?GAME_END 愿???먮쫫 媛쒖꽑.
+
