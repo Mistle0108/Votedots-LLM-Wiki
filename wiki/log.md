@@ -10,6 +10,13 @@ tags:
 
 # log
 
+## [2026-04-22] update | guard against PowerShell PR body mojibake
+- updated: `AGENTS.md`
+- updated: `wiki/AGENTS.md`
+- updated: `wiki/Home/Wiki-Operating-Rules.md`
+- updated: `wiki/log.md`
+- note: PowerShell 환경에서 한글 GitHub issue/PR 본문을 stdin이나 here-string 파이프로 직접 넘기지 않고, UTF-8 파일 기반으로 작성하도록 규칙을 추가했다. 이미 `??`처럼 깨진 본문은 같은 내용을 UTF-8 파일로 다시 업로드하는 방식으로 정정하도록 명시했다.
+
 ## [2026-04-22] update | formalize project-session wiki local-card setup
 - updated: `AGENTS.md`
 - updated: `README.md`

@@ -140,6 +140,9 @@ code@commit      # 특정 branch + commit에서 실제로 확인한 코드
 - wiki 규칙/가이드/운영 문서 수정 PR의 `비고`에는 사용자 문서 동기화 여부, issue/template 변경 여부, 생략 사유를 함께 적는다.
 - 새로 작성하는 GitHub `issue` 제목/본문, `PR` 제목/본문, 변경 요약은 기본적으로 한글로 작성한다.
 - 다른 언어는 사용자가 명시적으로 요청한 경우에만 사용한다.
+- PowerShell 환경에서 한글 `issue`/`PR` 본문을 올릴 때는 stdin이나 here-string 파이프 입력을 기본 경로로 쓰지 않는다.
+- 한글 본문이 필요하면 UTF-8로 저장된 파일을 만들고 `gh ... --body-file <utf8-file>`처럼 파일 기반으로 전달한다.
+- 이미 올라간 `issue`/`PR` 본문이 `??`처럼 깨졌다면 인코딩 문제로 보고, 같은 내용을 UTF-8 파일 기반으로 다시 업로드한다.
 - wiki 규칙/가이드/운영 문서 수정 PR 제목은 `docs: <주제>` 형식을 사용한다.
 - 프로젝트 PR 반영 wiki PR 제목은 `pr: <project-pr-number> <주제>` 형식을 사용한다.
 - PR 본문 템플릿의 상세 규칙은 `wiki/AGENTS.md`를 따른다.
