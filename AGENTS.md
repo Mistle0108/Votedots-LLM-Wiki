@@ -56,7 +56,10 @@ code@commit      # 특정 branch + commit에서 실제로 확인한 코드
 - 동기화 확인의 상세 명령과 실패 시 처리 원칙은 `wiki/AGENTS.md`를 따른다.
 
 ## 문서 원문 읽기 기본값
-- 커밋된 문서는 기본적으로 `git show <ref>:<repo-relative-path>`로 읽는다.
+- 커밋된 한글 문서는 원칙적으로 `git show <ref>:<repo-relative-path>`로 먼저 읽는다.
+- 기준 `ref`가 불명확하면 먼저 이번 판단의 `branch + commit`을 확정한 뒤 읽는다.
+- `Get-Content`, `Select-String`, 기타 PowerShell 파일 읽기는 미커밋 변경, 신규 파일, 워킹트리 상태 확인처럼 fallback 사유가 있을 때만 사용한다.
+- 같은 턴에서 이미 `git show`로 확인한 커밋 문서를 PowerShell 파일 읽기로 다시 중복 확인하지 않는다.
 - 미커밋 변경, 신규 파일, 워킹트리 상태만 `git diff`, `git status`, 파일 시스템 읽기로 보완한다.
 - 세부 fallback 규칙은 `wiki/AGENTS.md`를 따른다.
 
@@ -75,7 +78,7 @@ code@commit      # 특정 branch + commit에서 실제로 확인한 코드
 ## 읽기 시작 규칙
 - 사용자가 `wiki 읽고 내용 확인해`, `wiki 보고 정리해`, `wiki 기준으로 말해줘`라고 요청하면 아래 순서로 먼저 읽는다.
   1. wiki 로컬 `main`과 `origin/main` 최신 상태가 같은지 확인한다.
-  2. 가능하면 커밋된 원문은 `git show <ref>:<path>`로 읽는다.
+  2. 커밋된 원문은 원칙적으로 `git show <ref>:<path>`로 읽는다.
   3. `wiki/index.md`
   4. `wiki/Home/README.md`
   5. `wiki/03-Status/Current-State.md`
@@ -89,9 +92,12 @@ code@commit      # 특정 branch + commit에서 실제로 확인한 코드
 - 프로젝트 세션에서 반영 범위를 정리하더라도, 실제 wiki 반영 브랜치 생성과 git 작업 대상 저장소는 wiki 저장소다.
 - 상세한 브랜치 규칙과 반영 절차는 `wiki/AGENTS.md`를 따른다.
 
-## GitHub 작성 언어
+## GitHub 작성 규칙
 - 새로 작성하는 GitHub `issue` 제목/본문, `PR` 제목/본문, 변경 요약은 기본적으로 한글로 작성한다.
 - 다른 언어는 사용자가 명시적으로 요청한 경우에만 사용한다.
+- wiki 규칙/가이드/운영 문서 수정 PR 제목은 `docs: <주제>` 형식을 사용한다.
+- 프로젝트 PR 반영 wiki PR 제목은 `pr: <project-pr-number> <주제>` 형식을 사용한다.
+- PR 본문 템플릿의 상세 규칙은 `wiki/AGENTS.md`를 따른다.
 
 ## 민감 정보 규칙
 - 같이 쓰는 사람 전원이 봐도 되는 정보만 wiki에 올린다.

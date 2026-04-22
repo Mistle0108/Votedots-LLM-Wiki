@@ -106,11 +106,12 @@ code@commit
 6. 긴 작업 중 새 요청 시작 전이나 중요한 판단 직전에는 이 절차를 다시 수행한다.
 
 ## 문서 원문 읽기 기본값
-- 커밋된 한글 Markdown 원문은 기본적으로 파일 시스템 직접 읽기보다 Git 객체 경로 읽기를 우선한다.
-- 기본 형식은 `git show <ref>:<repo-relative-path>`다.
+- 커밋된 한글 Markdown 원문은 원칙적으로 `git show <ref>:<repo-relative-path>`로 먼저 읽는다.
 - `<ref>`가 불명확하면 먼저 이번 판단의 기준 `branch + commit`을 확정한다.
-- 이유: 현재 PowerShell 출력 인코딩 환경에서는 한글 문서가 깨질 수 있으므로, 커밋된 원문은 Git 객체에서 직접 읽는 편이 더 안정적이다.
-- 미커밋 변경, 신규 파일, 워킹트리 상태 확인이 필요하면 파일 시스템 읽기, `git diff`, `git status`를 fallback으로 사용한다.
+- 이유: 현재 PowerShell 출력 인코딩 환경에서는 한글 문서가 깨질 수 있고, 처음부터 Git 객체를 읽는 편이 기준 commit 일관성과 토큰 사용 면에서도 더 효율적이다.
+- `Get-Content`, `Select-String`, 기타 PowerShell 파일 읽기는 미커밋 변경, 신규 파일, 워킹트리 상태 확인이 필요할 때만 fallback으로 사용한다.
+- 같은 턴에서 이미 `git show`로 읽은 커밋 문서를 PowerShell 파일 읽기로 다시 중복 확인하지 않는다.
+- 필요한 경우에도 전체 파일 재읽기보다 필요한 섹션만 좁혀 읽는다.
 - 커밋 기준 본문과 워킹트리 본문을 함께 사용했으면 둘을 구분해서 설명한다.
 
 ## raw / source 규칙
@@ -160,6 +161,15 @@ code@commit
 - 새로 작성하는 GitHub `issue` 제목/본문, `PR` 제목/본문, 변경 요약은 기본적으로 한글로 작성한다.
 - 다른 언어는 사용자가 명시적으로 요청한 경우에만 사용한다.
 - 원문 메타데이터나 외부 원문 인용은 source 기준을 유지하되, 새로 작성하는 설명과 요약은 한글을 기본으로 한다.
+
+## PR 제목 / 본문 형식
+- wiki 규칙/가이드/운영 문서 수정 PR 제목은 `docs: <주제>`를 사용한다.
+- 프로젝트 PR 반영 PR 제목은 `pr: <project-pr-number> <주제>`를 사용한다.
+- `docs` PR 본문은 `변경 요약 -> 반영 문서 -> 비고` 순서를 사용한다.
+- `pr` PR 본문은 `기준 작업 -> 변경 요약 -> 반영 문서 -> 비고` 순서를 사용한다.
+- `기준 작업`에는 프로젝트 PR 번호와 기준 `branch + commit`을 적는다.
+- `반영 문서`에는 실제로 갱신한 wiki 문서만 적는다.
+- `비고`에는 남은 작업, 제외 범위, 리뷰 포인트만 짧게 적는다.
 
 ## 작성 규칙
 - 새 페이지보다 기존 페이지 업데이트를 우선한다.
@@ -220,10 +230,11 @@ commit:       # 근거 commit hash
 ## LLM 기본 읽기 순서
 - 사용자가 `wiki 읽고 내용 확인해`, `wiki 보고 정리해`, `wiki 기준으로 말해줘`라고 하면 아래 순서로 먼저 읽는다.
   1. wiki 로컬 `main`과 `origin/main` 최신 상태를 확인한다.
-  2. `wiki/index.md`
-  3. `wiki/Home/README.md`
-  4. `wiki/03-Status/Current-State.md`
-  5. `wiki/03-Status/Next-Work.md`
+  2. 커밋된 문서는 원칙적으로 `git show <ref>:<path>`로 원문을 읽는다.
+  3. `wiki/index.md`
+  4. `wiki/Home/README.md`
+  5. `wiki/03-Status/Current-State.md`
+  6. `wiki/03-Status/Next-Work.md`
 - 그 다음 질문 목적에 따라 확장한다.
   - 프로젝트 정의 질문:
     1. `wiki/01-Project/README.md`
@@ -254,7 +265,7 @@ commit:       # 근거 commit hash
 6. 특정 프로젝트 PR에 대응하는 반영이면 `pr/<project-pr-number>-<topic-slug>` 형식을 사용한다.
 7. `<topic-slug>`는 위 slug 규칙을 따른다.
 8. 프로젝트 PR 반영이면 위 체크리스트 기준으로 wiki 내용을 먼저 작성 / 갱신한다.
-9. 변경 내용 요약, `PR` 제목/본문, 관련 `issue` 초안이 필요하면 위 언어 규칙에 따라 한글로 정리한다.
+9. 변경 내용 요약, `PR` 제목/본문, 관련 `issue` 초안이 필요하면 위 언어 규칙과 `PR 제목 / 본문 형식`에 따라 한글로 정리한다.
 10. `커밋할까?`라고 사용자 동의를 받는다.
 11. 동의가 있으면 로컬 커밋을 진행한다.
 12. 커밋 후 PR용 변경 요약을 정리한다.

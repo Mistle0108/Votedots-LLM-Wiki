@@ -69,6 +69,22 @@ tags:
 - updated: `wiki/log.md`
 - note: `wiki/Home/Wiki-Usage-Guide.md`는 사람용 요청 예시 문서이고, LLM은 규칙 해석 시 `AGENTS.md` 계열 문서를 우선한다는 역할 분리를 명시함
 
+## [2026-04-22] update | formalize wiki PR title and body templates
+- updated: `AGENTS.md`
+- updated: `wiki/AGENTS.md`
+- updated: `wiki/Home/Wiki-Operating-Rules.md`
+- updated: `wiki/Home/Wiki-Usage-Guide.md`
+- updated: `wiki/log.md`
+- note: wiki PR 제목은 작업 성격에 따라 `docs: <주제>` 또는 `pr: <project-pr-number> <주제>` 형식을 사용하고, `docs`와 `pr`별 PR 본문 섹션 순서를 고정하는 규칙을 추가함
+
+## [2026-04-22] update | strengthen git-object-first reading rule for committed Korean docs
+- updated: `AGENTS.md`
+- updated: `wiki/AGENTS.md`
+- updated: `wiki/Home/Wiki-Operating-Rules.md`
+- updated: `wiki/Home/Wiki-Usage-Guide.md`
+- updated: `wiki/log.md`
+- note: 커밋된 한글 문서는 원칙적으로 처음부터 `git show <ref>:<path>`로 읽고, PowerShell 파일 읽기는 미커밋 변경·신규 파일·워킹트리 확인 같은 fallback 사유가 있을 때만 사용하도록 규칙을 강화함
+
 ## [2026-04-22] update | wiki usage guide added
 - added: `wiki/Home/Wiki-Usage-Guide.md`
 - updated: `wiki/Home/README.md`
