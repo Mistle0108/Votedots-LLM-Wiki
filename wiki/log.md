@@ -52,6 +52,15 @@ tags:
 - updated: `wiki/log.md`
 - note: wiki 동기화 확인 절차를 `git fetch origin main` -> `git rev-parse main` -> `git rev-parse origin/main` 기준으로 고정하고, 프로젝트 PR 반영 체크리스트와 `<topic-slug>` 규칙을 명문화함. 루트 `AGENTS.md`는 진입/요약 규칙 중심으로 더 얇게 정리함
 
+## [2026-04-22] update | require Korean for newly written issue and PR content
+- updated: `AGENTS.md`
+- updated: `wiki/AGENTS.md`
+- updated: `wiki/Home/README.md`
+- updated: `wiki/Home/Wiki-Usage-Guide.md`
+- updated: `wiki/Home/Wiki-Operating-Rules.md`
+- updated: `wiki/log.md`
+- note: 새로 작성하는 GitHub issue 제목/본문, PR 제목/본문, 변경 요약은 기본적으로 한글로 작성하고 다른 언어는 사용자가 별도 요청한 경우에만 사용하도록 규칙을 추가함
+
 ## [2026-04-22] update | wiki usage guide added
 - added: `wiki/Home/Wiki-Usage-Guide.md`
 - updated: `wiki/Home/README.md`
