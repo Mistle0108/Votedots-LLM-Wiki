@@ -2,7 +2,7 @@
 title: Wiki Operating Rules
 type: wiki-operating-rules
 status: active
-updated: 2026-04-22
+updated: 2026-04-23
 tags:
   - wiki
   - home
@@ -184,19 +184,23 @@ wiki 로컬 main과 origin/main이 다르지만, 현재 상태에서는 main 전
 ## 개인 로컬 경로 설정
 - 공용 문서에는 개인 로컬 경로를 적지 않는다.
 - 각 사용자는 `raw/repos/_repo-local-card.template.md`를 참고해 `raw/repos/{repo}.local.md`를 만든다.
-- 이 파일에는 `execution_path`와 `wiki_repo_path`를 기록한다.
+- 이 파일에는 `execution_path` 같은 실행 경로 메타데이터를 기록한다.
 - `{repo}.local.md`는 gitignored 파일이므로 원격 저장소에 올라가지 않는다.
-- LLM이 project repo와 wiki repo 경로를 확인할 때는 먼저 이 파일을 본다.
-- `wiki_repo_path`가 없거나 현재 세션에서 접근할 수 없으면 사용자에게 경로를 한 번만 확인하고, 같은 파일에 저장한 뒤 이후 기본값으로 재사용한다.
+- 프로젝트 세션용 wiki 경로는 프로젝트 저장소의 `./.local/wiki-repo.yml`에 기록한다.
+- 이 파일은 프로젝트 저장소에서 gitignored 로컬 설정 파일로 관리한다.
+- 현재 shell이 WSL이면 `wiki_repo_paths.wsl`, Windows shell이면 `wiki_repo_paths.windows`를 쓴다.
+- 현재 shell 슬롯 값이 없거나 현재 세션에서 접근할 수 없으면 사용자에게 경로를 한 번만 확인하고, 같은 파일의 현재 shell 슬롯에 저장한 뒤 이후 기본값으로 재사용한다.
 
 ## 프로젝트 세션 연계 규칙
 - 프로젝트 세션에서 local wiki 저장소를 참조하는 것을 기본 환경으로 본다.
 - 기본 작업 컨텍스트는 프로젝트 저장소 세션이다.
 - 사용자는 프로젝트 세션에서 로컬 wiki를 읽고 현재 상태, 다음 작업, 근거 문서를 확인한다.
-- local wiki 저장소 경로를 확인할 때는 먼저 `raw/repos/{repo}.local.md`의 `wiki_repo_path`를 본다.
-- `wiki_repo_path`가 있고 현재 세션에서 접근 가능하면 그 경로를 이번 세션의 기본 wiki 경로로 사용한다.
-- `wiki_repo_path`가 없거나 현재 세션에서 접근할 수 없으면 자동 추정하지 말고 사용자에게 경로를 한 번만 확인한 뒤, 같은 파일에 저장하고 이후 기본값으로 사용한다.
+- local wiki 저장소 경로를 확인할 때는 먼저 프로젝트 저장소의 `./.local/wiki-repo.yml`을 본다.
+- 현재 shell이 WSL이면 `wiki_repo_paths.wsl`, Windows shell이면 `wiki_repo_paths.windows`를 확인한다.
+- 현재 shell 슬롯 값이 있고 현재 세션에서 접근 가능하면 그 경로를 이번 세션의 기본 wiki 경로로 사용한다.
+- 현재 shell 슬롯 값이 없거나 현재 세션에서 접근할 수 없으면 자동 추정하지 말고 사용자에게 경로를 한 번만 확인한 뒤, 같은 파일의 현재 shell 슬롯에 저장하고 이후 기본값으로 사용한다.
 - 프로젝트 세션의 shell에서 실제로 접근 가능한 경로를 써야 한다. 프로젝트 `execution_path`가 WSL이면 wiki 경로도 WSL에서 보이는 경로를 쓴다.
+- `raw/repos/{repo}.local.md`는 wiki 경로 bootstrap 1차 기준이 아니라 `execution_path` 같은 보조 로컬 메타데이터용으로만 사용한다.
 - 프로젝트 코드 확인, 구현, 검증은 프로젝트 저장소에서 수행하고, wiki 저장소는 문서 반영 브랜치와 공유 문서 관리 용도로만 사용한다.
 - wiki 반영 브랜치 생성, wiki 문서 commit, wiki PR 생성과 merge는 모두 wiki 저장소에서 수행한다. 프로젝트 저장소에서는 반영 범위만 정리하고 실제 git 작업은 하지 않는다.
 - 프로젝트 세션에서 여러 요청을 이어 처리할 때도, 새 요청 시작 전과 중요한 판단 단계 전에는 wiki 로컬/원격 일치 여부를 다시 확인한다.

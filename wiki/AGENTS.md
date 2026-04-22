@@ -102,14 +102,16 @@ wiki 로컬 main과 origin/main이 다르지만, 현재 상태에서는 main 전
 ## 프로젝트 세션 연계 규칙
 - 프로젝트 세션에서 local wiki 저장소를 참조하는 것을 기본 환경으로 본다.
 - 프로젝트 작업을 위해 wiki를 읽거나 wiki 등록을 준비할 때는 프로젝트 저장소의 `execution_path` 기준 세션에서 진행한다.
-- 프로젝트 세션에서 local wiki 저장소 경로를 확인할 때는 먼저 `raw/repos/{repo}.local.md`의 `wiki_repo_path`를 본다.
-- `wiki_repo_path`가 있고 현재 세션에서 접근 가능하면 그 경로를 이번 세션의 기본 wiki 경로로 고정한다.
-- `wiki_repo_path`가 없거나 현재 세션에서 접근할 수 없으면 자동 추정하지 말고 사용자에게 경로를 한 번만 확인한다.
-- 확인한 경로는 `raw/repos/{repo}.local.md`의 `wiki_repo_path`에 저장하고 이후 기본값으로 재사용한다.
+- 프로젝트 세션에서 local wiki 저장소 경로를 확인할 때는 먼저 프로젝트 저장소의 `./.local/wiki-repo.yml`을 본다.
+- 현재 shell이 WSL이면 `wiki_repo_paths.wsl`, Windows shell이면 `wiki_repo_paths.windows`를 본다.
+- 현재 shell 슬롯 값이 있고 현재 세션에서 접근 가능하면 그 경로를 이번 세션의 기본 wiki 경로로 고정한다.
+- 현재 shell 슬롯 값이 없거나 현재 세션에서 접근할 수 없으면 자동 추정하지 말고 사용자에게 경로를 한 번만 확인한다.
+- 확인한 경로는 같은 파일의 현재 shell 슬롯에 저장하고 이후 기본값으로 재사용한다.
 - 프로젝트 세션의 shell에서 실제로 접근 가능한 경로를 써야 한다. 프로젝트 `execution_path`가 WSL이면 wiki 경로도 WSL에서 보이는 경로를 쓴다.
 - 프로젝트 세션에서는 로컬 wiki를 참조 문서로 읽고, 각 사용자 명령과 중요한 판단 단계 전에 wiki 로컬/원격 일치 여부를 다시 확인한다.
 - 프로젝트 저장소 경로가 필요하면 `raw/repos/{repo}.local.md`의 `execution_path`를 먼저 확인하고, 없으면 세션 입력으로 받는다.
 - 같은 세션에서 이미 한 번 확인한 wiki repo 경로가 있으면 다시 묻지 않고 그 값을 계속 사용한다.
+- `raw/repos/{repo}.local.md`는 wiki repo 경로 bootstrap 1차 기준으로 쓰지 않는다.
 - 프로젝트 코드 확인, 설계, 구현, 검증은 프로젝트 저장소에서 수행하고, wiki 저장소는 문서 반영 브랜치와 공유 문서 관리 용도로만 사용한다.
 - wiki 반영 브랜치 생성, wiki 문서 commit, wiki PR 생성과 merge는 모두 wiki 저장소에서 수행한다. 프로젝트 저장소에서는 반영 범위만 정리하고, 실제 git 작업은 wiki 저장소 기준으로 진행한다.
 - 환경 변수나 shell 초기화 파일 설정은 필수로 두지 않는다.
@@ -118,7 +120,7 @@ wiki 로컬 main과 origin/main이 다르지만, 현재 상태에서는 main 전
 ## LLM 기본 읽기 순서
 - 사용자가 `wiki 읽고 내용 확인해`, `wiki 보고 정리해`, `wiki 기준으로 말해줘`라고 하면 아래 순서로 먼저 읽는다.
   1. wiki 로컬 `main`과 `origin/main`의 최신 상태가 같은지 확인하고, 이번 답변의 기준 `branch + commit`을 확정한다.
-  2. 프로젝트 연계 질문이면 프로젝트 저장소 `execution_path`, 현재 실행 컨텍스트, `raw/repos/{repo}.local.md`의 `wiki_repo_path` 또는 같은 세션에서 이미 확인한 wiki repo 경로를 확인한다.
+  2. 프로젝트 연계 질문이면 프로젝트 저장소 `execution_path`, 현재 실행 컨텍스트, 프로젝트 저장소의 `./.local/wiki-repo.yml` 현재 shell 슬롯 또는 같은 세션에서 이미 확인한 wiki repo 경로를 확인한다.
   3. 커밋된 문서는 원칙적으로 `git show <ref>:<path>`로 원문을 읽는다.
   4. `wiki/index.md`
   5. `wiki/Home/README.md`
@@ -149,7 +151,7 @@ wiki 로컬 main과 origin/main이 다르지만, 현재 상태에서는 main 전
 - 사람용 안내 문서와 LLM 규칙 문서가 동시에 보이면, LLM은 항상 `AGENTS.md` 계열 규칙을 우선한다.
 - 커밋된 한글 문서 원문 확인은 처음부터 Git 객체 기준으로 수행하고, fallback 사유가 없으면 PowerShell 파일 읽기로 우회하지 않는다.
 - sync 불일치가 있으면 `불일치 안내 -> fast-forward 시도/실패 결과 -> 새 기준 commit 또는 실패 사유` 순서로 짧게 설명한다.
-- 프로젝트 세션에서 wiki 경로를 설명할 때는 현재 기준 wiki repo 경로와 그 경로를 어디서 확정했는지(`wiki_repo_path` / 같은 세션 확인값)를 함께 밝힌다.
+- 프로젝트 세션에서 wiki 경로를 설명할 때는 현재 기준 wiki repo 경로와 그 경로를 어디서 확정했는지(`./.local/wiki-repo.yml` / 같은 세션 확인값)를 함께 밝힌다.
 
 ## wiki 사용법 질문 응답 원칙
 - 사용자가 `wiki를 어떻게 사용하냐`, `wiki에서 뭐 물어볼 수 있냐`, `wiki 어떻게 봐야 하냐`고 물으면 `wiki/Home/Wiki-Usage-Guide.md` 기준의 세션용 요청 예시를 먼저 3~8개 제시한다.

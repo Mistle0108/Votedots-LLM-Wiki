@@ -2,7 +2,7 @@
 title: Home
 type: home
 status: active
-updated: 2026-04-22
+updated: 2026-04-23
 tags:
   - wiki
   - home
@@ -21,8 +21,9 @@ tags:
 
 ## 프로젝트 세션 초기 세팅
 - 프로젝트 세션에서 local wiki 저장소를 기본 참조로 쓰려면 먼저 [Project Session Setup](wiki/Home/Project-Session-Setup.md)를 따라 초기 세팅을 맞춘다.
-- 핵심은 `raw/repos/{repo}.local.md`의 `wiki_repo_path`에 현재 shell 기준 wiki 경로를 저장해 두는 것이다.
-- 경로가 없거나 접근이 안 되면 한 번만 확인하고 같은 파일에 저장한 뒤 이후 기본값으로 재사용한다.
+- 핵심은 프로젝트 저장소의 `./.local/wiki-repo.yml`에 현재 shell 기준 wiki 경로를 저장해 두는 것이다.
+- 현재 shell이 WSL이면 `wiki_repo_paths.wsl`, Windows shell이면 `wiki_repo_paths.windows`를 사용한다.
+- 경로가 없거나 접근이 안 되면 한 번만 확인하고 같은 파일의 현재 shell 슬롯에 저장한 뒤 이후 기본값으로 재사용한다.
 - 프로젝트 `execution_path`가 WSL이면 wiki 경로도 WSL에서 보이는 경로를 쓴다.
 
 ## 빠른 사용 예시

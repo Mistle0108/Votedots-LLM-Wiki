@@ -20,7 +20,7 @@ LLM 운영 규칙:
 - [wiki/AGENTS.md](wiki/AGENTS.md)
 
 개인 로컬 설정:
-- `raw/repos/_repo-local-card.template.md`를 참고해 `raw/repos/{repo}.local.md`를 만든다.
-- 여기에 본인 `execution_path`와 `wiki_repo_path`를 입력한다.
-- 프로젝트 세션에서 wiki 경로를 한 번 확인하면 그 값을 `wiki_repo_path`에 저장하고 이후 기본값으로 사용한다.
-- `.local.md` 파일은 git에 올라가지 않는다.
+- 프로젝트 세션용 wiki 경로는 프로젝트 repo의 `./.local/wiki-repo.yml`에 저장한다.
+- 현재 shell이 WSL이면 `wiki_repo_paths.wsl`, Windows shell이면 `wiki_repo_paths.windows`를 사용한다.
+- wiki 경로를 한 번 확인하면 같은 파일의 현재 shell 슬롯에 저장하고 이후 기본값으로 사용한다.
+- `raw/repos/{repo}.local.md`는 `execution_path` 같은 보조 로컬 메타데이터만 기록하며 git에 올라가지 않는다.
