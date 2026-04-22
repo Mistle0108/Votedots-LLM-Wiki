@@ -27,6 +27,7 @@ tags:
 | 기록 문서 | [[wiki/04-Records/README|04-Records]] |
 | 근거 source 문서 | [[wiki/05-Sources/README|05-Sources]] |
 | 운영 규칙 문서 | [[wiki/Home/Wiki-Operating-Rules|Wiki Operating Rules]] |
+| 사용 가이드 문서 | [[wiki/Home/Wiki-Usage-Guide|Wiki Usage Guide]] |
 
 ## 읽는 순서
 1. [[wiki/index|index]]
@@ -52,6 +53,7 @@ tags:
 
 ## 참고 문서
 - 팀 공유용 운영 설명서: [[wiki/Home/Wiki-Operating-Rules|Wiki Operating Rules]]
+- 실제 사용 가이드: [[wiki/Home/Wiki-Usage-Guide|Wiki Usage Guide]]
 - LLM 전역 규칙: `/AGENTS.md`
 - wiki 내부 작업 규칙: `wiki/AGENTS.md`
 

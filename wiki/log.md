@@ -10,6 +10,12 @@ tags:
 
 # log
 
+## [2026-04-22] update | wiki usage guide added
+- added: `wiki/Home/Wiki-Usage-Guide.md`
+- updated: `wiki/Home/README.md`
+- updated: `wiki/index.md`
+- purpose: 팀원이 wiki를 언제 확인하고 언제 갱신해야 하는지, LLM에게 어떻게 요청해야 하는지 설명하는 사용 가이드 추가
+
 ## [2026-04-20] setup | raw/wiki/Output 구조와 index/log 초기화
 - created: `raw/`, `wiki/`, `Output/`
 - added: 루트 `AGENTS.md`, `wiki/index.md`, `wiki/log.md`, `wiki/07-Sources/README.md`
