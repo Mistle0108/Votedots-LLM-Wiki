@@ -17,6 +17,41 @@ tags:
   - 작업 시작 전에 현재 상태와 다음 작업을 확인하기
   - 작업 완료 후 wiki에 반영이 필요한 내용을 판단하기
   - LLM에게 어떤 방식으로 요청해야 하는지 바로 알기
+- 이 문서는 사람용 사용 가이드다. LLM 실행 규칙의 원본은 `AGENTS.md`, `wiki/AGENTS.md`다.
+
+## 프로젝트 세션에서 사용하는 기준
+- 기본 작업 컨텍스트는 프로젝트 저장소 세션이다.
+- 프로젝트 세션에서는 로컬 wiki를 참조해서 현재 상태와 다음 작업을 확인하고, 실제 구현/검증은 프로젝트 저장소에서 진행한다.
+- wiki 반영 브랜치 생성, wiki 문서 commit, wiki PR 생성과 merge는 wiki 저장소에서만 진행한다.
+- wiki를 근거로 사용자 명령을 수행하기 전에는 먼저 wiki 로컬 `main`과 `origin/main`이 같은지 확인한다.
+- 작업이 길어지거나 새로운 요청으로 넘어갈 때도 wiki 로컬/원격 일치 여부를 다시 확인한다.
+
+## wiki 동기화 확인 기준
+- 기본 확인 순서는 `git fetch origin main` -> `git rev-parse main` -> `git rev-parse origin/main` 이다.
+- 두 해시가 같으면 `wiki local main == origin/main`으로 보고, `main@<hash>`를 기준 commit으로 사용한다.
+- `git fetch` 실패, `main` 부재, 해시 불일치면 최신이라고 단정하지 않고 그 제한과 현재 기준 commit을 먼저 말한다.
+- 자동 `pull`, `merge`, `rebase`는 하지 않고 사용자와 기준 상태를 먼저 맞춘다.
+
+## 문서 원문 확인 기준
+- 커밋된 한글 wiki 문서 원문은 원칙적으로 `git show <ref>:<path>` 기준으로 확인한다.
+- 미커밋 변경, 신규 파일, 워킹트리 상태가 필요할 때만 `git diff`, `git status`, 파일 시스템 읽기를 fallback으로 사용한다.
+- 같은 문서를 이미 commit 기준으로 읽었다면, 같은 턴에서 PowerShell 파일 읽기로 다시 중복 확인하지 않는 것을 기본으로 본다.
+
+## wiki 브랜치 이름 기준
+- 규칙/가이드/운영 문서 수정은 `docs/<topic-slug>`를 사용한다.
+- 특정 프로젝트 PR 반영은 `pr/<project-pr-number>-<topic-slug>`를 사용한다.
+- `<topic-slug>`는 소문자 영어, 숫자, 하이픈만 사용하고 kebab-case 2~6단어 정도로 유지한다.
+- `docs`, `pr`, `branch`, `update`, `misc`, 날짜, PR 번호처럼 prefix에 이미 있는 정보는 slug에 반복하지 않는다.
+
+## 이슈 / PR 작성 언어
+- LLM이 새로 작성하는 GitHub `issue` 제목/본문, `PR` 제목/본문, 변경 요약은 기본적으로 한글로 작성한다.
+- 영어나 다른 언어가 필요하면 사용자가 별도로 요청한다.
+
+## PR 제목 / 본문 초안 기준
+- wiki 규칙/가이드/운영 문서 수정용 PR 제목 초안은 `docs: <주제>` 형식을 사용한다.
+- 프로젝트 PR 반영용 PR 제목 초안은 `pr: <project-pr-number> <주제>` 형식을 사용한다.
+- `docs` 본문 초안은 `변경 요약 -> 반영 문서 -> 비고` 순서를 사용한다.
+- `pr` 본문 초안은 `기준 작업 -> 변경 요약 -> 반영 문서 -> 비고` 순서를 사용한다.
 
 ## 이 wiki에서 먼저 보면 되는 문서
 - [[wiki/Home/README|Home]]
@@ -33,6 +68,7 @@ tags:
   - repo, issue, PR 근거 문서를 확인한다.
 
 ## 언제 wiki를 확인해야 하는가
+- 사용자의 새 명령을 수행하기 전
 - 새 작업을 시작하기 전
 - 다른 사람이 진행하던 작업을 이어받기 전
 - 현재 우선순위와 남은 작업을 다시 확인해야 할 때
@@ -50,13 +86,16 @@ tags:
 - 작업 시작 전에는 아래처럼 요청한다.
 
 ```text
-wiki 읽고 현재 상태와 다음 작업을 정리해줘.
+프로젝트 세션에서 로컬 wiki와 origin/main이 같은지 먼저 확인하고,
+그 기준 commit으로 현재 상태와 다음 작업을 정리해줘.
+원격 확인이 안 되거나 로컬/원격이 다르면 그 제한과 기준 commit을 먼저 말해줘.
 ```
 
 - 특정 영역만 확인하고 싶으면 범위를 같이 적는다.
 
 ```text
-wiki 읽고 history panel 관련 현재 상태, 남은 작업, 참고할 근거 문서를 정리해줘.
+프로젝트 세션에서 wiki 최신 상태를 먼저 확인하고,
+history panel 관련 현재 상태, 남은 작업, 참고할 근거 문서를 정리해줘.
 ```
 
 - 기대 결과는 아래 4가지다.
@@ -69,27 +108,46 @@ wiki 읽고 history panel 관련 현재 상태, 남은 작업, 참고할 근거 
 - 기능 PR이 merge된 뒤에는 아래처럼 요청한다.
 
 ```text
-프로젝트 main 브랜치 최신 merge commit 기준으로 wiki 반영이 필요한 내용을 정리해줘.
-필요한 raw, Sources, Current-State, Next-Work, Records를 갱신해줘.
+프로젝트 PR이 끝났으니 프로젝트 세션에서 wiki 로컬 main과 origin/main이 같은지 먼저 확인해줘.
+같으면 프로젝트 main 브랜치 최신 merge commit 기준으로 wiki 반영이 필요한 내용을 정리해줘.
+필요하면 wiki 저장소에서 만들 wiki 브랜치 이름도 제안하고,
+PR 제목은 `pr: <번호> <주제>` 형식으로, 본문은 `기준 작업 / 변경 요약 / 반영 문서 / 비고` 순서로 한글 초안 정리해줘.
+커밋/PR/merge는 내 동의를 받아 진행해줘.
 ```
 
 - 특정 merge commit을 기준으로 고정하고 싶으면 commit hash를 같이 준다.
 
 ```text
 프로젝트 main@<commit> 기준으로 wiki를 갱신해줘.
-Current-State, Next-Work, 필요한 Sources/Records까지 반영해줘.
+wiki 로컬 main과 origin/main이 같은지 먼저 확인하고,
+필요하면 wiki 저장소에서 만들 `pr/<번호>-<주제>` 형식의 wiki 브랜치 이름을 제안해줘.
+Current-State, Next-Work, 필요한 Sources/Records까지 반영하고,
+PR 제목은 `pr: <번호> <주제>` 형식으로, 본문은 `기준 작업 / 변경 요약 / 반영 문서 / 비고` 순서로 한글 초안 정리해줘.
+```
+
+- wiki 규칙/가이드/운영 문서 자체를 수정한 경우에는 아래처럼 요청한다.
+
+```text
+이번 작업은 wiki 운영 규칙 수정이니,
+wiki 저장소용 브랜치 이름을 제안하고 `docs: <주제>` 형식의 PR 제목과
+`변경 요약 / 반영 문서 / 비고` 순서의 한글 본문 초안을 정리해줘.
 ```
 
 - 기대 결과는 아래 순서를 따른다.
+  - wiki 로컬/원격 최신 상태 확인
   - 기준 branch + commit 확인
+  - `Current-State`, `Next-Work`, 관련 `05-Sources`, 필요 시 `04-Records` 확인
   - 필요한 raw/source/status/records 반영
+  - 새 문서 추가/삭제/이름 변경이 있으면 `index.md` 반영
+  - 의미 있는 변경이면 `log.md` 기록
   - 변경 요약 제시
   - 사용자 승인 후 커밋
   - 사용자 승인 후 PR 요청
 
 ## 작업 흐름 예시
-1. 작업 시작 전에 LLM에게 wiki를 읽고 현재 상태와 다음 작업을 정리해달라고 요청한다.
-2. 필요한 경우 `System Reference`, `Data Flow`, `Records`, `Sources`까지 확장해서 읽게 한다.
-3. 프로젝트 repo에서 기능 작업과 PR merge가 완료되면, merge commit 기준으로 wiki 반영을 요청한다.
-4. LLM이 변경 내용을 요약하면 사람이 검토한다.
-5. 사람이 승인하면 wiki repo에 커밋과 PR을 진행한다.
+1. 프로젝트 세션에서 사용자의 새 요청을 처리하기 전에 LLM이 wiki 로컬 `main`과 `origin/main`이 같은지 확인한다.
+2. LLM에게 wiki를 읽고 현재 상태와 다음 작업을 정리해달라고 요청한다.
+3. 필요한 경우 `System Reference`, `Data Flow`, `Records`, `Sources`까지 확장해서 읽게 한다.
+4. 프로젝트 저장소에서 기능 작업과 PR merge가 완료되면, 같은 프로젝트 세션에서 merge commit 기준으로 wiki 반영을 요청한다.
+5. LLM은 wiki 로컬 `main`과 `origin/main`을 다시 확인한 뒤, 필요하면 wiki 저장소에서 `docs/<topic-slug>` 또는 `pr/<project-pr-number>-<topic-slug>` 브랜치를 만들도록 반영 계획을 제안한다.
+6. LLM이 변경 내용을 요약하면 사람이 검토하고, 동의가 있을 때만 wiki 커밋, PR, main 머지를 순서대로 진행한다.
