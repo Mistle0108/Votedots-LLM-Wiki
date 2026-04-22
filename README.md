@@ -4,7 +4,15 @@
 
 시작 문서:
 - [Home](wiki/Home/README.md)
+- [Wiki Usage Guide](wiki/Home/Wiki-Usage-Guide.md)
 - [Wiki Operating Rules](wiki/Home/Wiki-Operating-Rules.md)
+
+세션에서 바로 쓰는 요청 예시:
+- `wiki 읽고 현재 상태와 다음 작업 정리해줘.`
+- `wiki에서 이 내용 확인해봐: <주제>`
+- `wiki 기준으로 관련 문서 찾아줘: <주제>`
+- `지금 완료된 작업 wiki에 등록해줘.`
+- 마지막 요청은 현재 프로젝트 세션의 완료 작업 기준으로 wiki 반영 범위 정리 -> 대상 문서 확인 -> wiki 반영 절차 제안까지 이어지는 요청으로 본다.
 
 LLM 운영 규칙:
 - [AGENTS.md](AGENTS.md)
