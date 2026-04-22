@@ -10,6 +10,20 @@ tags:
 
 # log
 
+## [2026-04-23] update | clarify one-time AGENTS read and conditional reread
+- updated: `AGENTS.md`
+- updated: `wiki/AGENTS.md`
+- updated: `wiki/Home/Wiki-Operating-Rules.md`
+- updated: `wiki/log.md`
+- note: `AGENTS.md` 계열은 세션 시작이나 첫 wiki 진입 시 1회 읽고, 같은 세션에서는 매 요청마다 전체를 다시 읽지 않는다는 운영 원칙을 추가했다. 브랜치 변경, 저장소 변경, 규칙 변경 요청, 작업 범위 이동, 현재 세션에서 AGENTS 문서를 수정한 경우, 규칙 충돌이나 해석 불확실성 같은 조건에서만 재읽도록 정리했고, sync 상태나 원격 branch 같은 가변 정보 재확인과 AGENTS 전체 재읽기를 분리했다.
+
+## [2026-04-23] update | add fast path rules for simple GitHub tasks
+- updated: `AGENTS.md`
+- updated: `wiki/AGENTS.md`
+- updated: `wiki/Home/Wiki-Operating-Rules.md`
+- updated: `wiki/log.md`
+- note: 문서 수정이 없는 `이슈 생성`, `작업 브랜치 생성`, `이슈 + 작업 브랜치 준비` 요청은 빠른 경로로 처리하도록 규칙을 추가했다. 같은 세션에서 이미 확인한 저장소 대상, template, 브랜치 규칙, 기준 commit은 다시 읽지 않고, 대상 저장소 불명확, template 충돌, 원격 확인 실패 같은 blocker가 있을 때만 추가 탐색하도록 정리했다. 특별한 오류, 승인 대기, 원격 장애가 없으면 1~2분 안쪽 처리를 기본 목표로 둔다.
+
 ## [2026-04-23] update | move project-session wiki bootstrap to project-local config
 - updated: `AGENTS.md`
 - updated: `README.md`
