@@ -49,9 +49,35 @@ log.md            # wiki 운영 이력
 1. 기본 명령 순서는 `git fetch origin main` -> `git rev-parse main` -> `git rev-parse origin/main` 이다.
 2. 두 해시가 같으면 `wiki local main == origin/main`으로 본다.
 3. 두 해시가 같으면 `main@<hash>`를 이번 읽기/쓰기 기준으로 확정한다.
-4. `git fetch` 실패, `main` 부재, 두 해시 불일치면 최신이라고 단정하지 않는다.
-5. 이 경우 자동 `pull`, `merge`, `rebase`를 하지 않고, 제한과 현재 사용 가능한 기준 `branch + commit`만 먼저 밝힌다.
-6. 긴 작업 중 새 사용자 명령이나 중요한 판단 직전에는 이 절차를 다시 수행한다.
+4. `git fetch`가 실패하거나 `main`이 없으면 최신이라고 단정하지 않고, 제한과 현재 사용 가능한 기준 `branch + commit`만 먼저 밝힌다.
+5. 두 해시가 다르면 먼저 `wiki local main != origin/main` 사실과, 로컬 `main`을 `origin/main`에 `fast-forward`로 맞춘 뒤 계속 진행하겠다는 계획을 짧게 안내한다.
+6. 현재 워킹트리 때문에 `main` 전환이 가능한지 확인한다. 미커밋 변경 때문에 전환이 안 되면 자동 정리하지 않고 실패 사유를 먼저 밝힌다.
+7. 전환 가능하면 로컬 `main`으로 이동해 `git pull --ff-only origin main`으로 `origin/main`에 맞춘다.
+8. `fast-forward`가 성공하면 `git rev-parse main`으로 새 기준 commit을 다시 확인하고, 그 commit을 이번 읽기/쓰기 기준으로 확정한다.
+9. `fast-forward`가 실패하면 자동 `merge`, `rebase`, 강제 reset을 하지 않고 실패 사유를 먼저 밝힌다.
+10. 긴 작업 중 새 사용자 명령이나 중요한 판단 직전에는 이 절차를 다시 수행한다.
+
+## sync 불일치 대응 문구 예시
+- 불일치 안내 예시:
+
+```text
+wiki 로컬 main과 origin/main이 다릅니다.
+먼저 로컬 main을 origin/main에 fast-forward로 맞춘 뒤, 새 기준 commit으로 계속 진행하겠습니다.
+```
+
+- fast-forward 성공 예시:
+
+```text
+wiki local main을 origin/main@<commit>으로 fast-forward 했습니다.
+이제 main@<commit> 기준으로 계속 진행합니다.
+```
+
+- fast-forward 실패 예시:
+
+```text
+wiki 로컬 main과 origin/main이 다르지만, 현재 상태에서는 main 전환 또는 fast-forward가 불가능합니다.
+자동 merge/rebase는 하지 않고, 실패 사유와 현재 기준 상태를 먼저 공유합니다.
+```
 
 ## 프로젝트 세션 연계 규칙
 - 프로젝트 작업을 위해 wiki를 읽거나 wiki 등록을 준비할 때는 프로젝트 저장소의 `execution_path` 기준 세션에서 진행한다.
@@ -94,6 +120,7 @@ log.md            # wiki 운영 이력
 - 커밋 기준 본문과 워킹트리 본문을 함께 썼으면 어떤 부분이 어느 기준인지 구분해서 설명한다.
 - 사람용 안내 문서와 LLM 규칙 문서가 동시에 보이면, LLM은 항상 `AGENTS.md` 계열 규칙을 우선한다.
 - 커밋된 한글 문서 원문 확인은 처음부터 Git 객체 기준으로 수행하고, fallback 사유가 없으면 PowerShell 파일 읽기로 우회하지 않는다.
+- sync 불일치가 있으면 `불일치 안내 -> fast-forward 시도/실패 결과 -> 새 기준 commit 또는 실패 사유` 순서로 짧게 설명한다.
 
 ## 이슈 / PR 작성 언어
 - 새로 작성하는 GitHub `issue` 제목/본문, `PR` 제목/본문, 변경 요약은 기본적으로 한글로 작성한다.

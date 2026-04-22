@@ -85,6 +85,14 @@ tags:
 - updated: `wiki/log.md`
 - note: 커밋된 한글 문서는 원칙적으로 처음부터 `git show <ref>:<path>`로 읽고, PowerShell 파일 읽기는 미커밋 변경·신규 파일·워킹트리 확인 같은 fallback 사유가 있을 때만 사용하도록 규칙을 강화함
 
+## [2026-04-22] update | formalize sync mismatch handling with fast-forward main update
+- updated: `AGENTS.md`
+- updated: `wiki/AGENTS.md`
+- updated: `wiki/Home/Wiki-Operating-Rules.md`
+- updated: `wiki/Home/Wiki-Usage-Guide.md`
+- updated: `wiki/log.md`
+- note: wiki 로컬 `main`과 `origin/main`이 다르면 먼저 불일치 사실을 알리고, 가능하면 로컬 `main`을 `origin/main`에 `fast-forward`로 맞춘 뒤 새 기준 commit으로 계속 진행하는 규칙과 예시 문구를 추가함. `main` 전환이나 `ff-only`가 실패하면 자동 merge/rebase는 하지 않도록 명시함
+
 ## [2026-04-22] update | wiki usage guide added
 - added: `wiki/Home/Wiki-Usage-Guide.md`
 - updated: `wiki/Home/README.md`

@@ -54,6 +54,8 @@ code@commit      # 특정 branch + commit에서 실제로 확인한 코드
 - 같은 질문은 같은 `commit` 기준이면 같은 답이 나와야 한다.
 - 사용자의 명령을 wiki 기준으로 수행하기 전에는 wiki 로컬 `main`과 `origin/main` 일치 여부를 먼저 확인한다.
 - 동기화 확인의 상세 명령과 실패 시 처리 원칙은 `wiki/AGENTS.md`를 따른다.
+- 불일치가 확인되면 먼저 불일치 사실을 안내하고, 가능하면 로컬 `main`을 `origin/main`에 `fast-forward`로 맞춘 뒤 기준 commit을 다시 확정한다.
+- `main` 전환이 안 되거나 `fast-forward`가 실패하면 자동 `merge`, `rebase`, 강제 reset은 하지 않고 실패 사유를 먼저 알린다.
 
 ## 문서 원문 읽기 기본값
 - 커밋된 한글 문서는 원칙적으로 `git show <ref>:<repo-relative-path>`로 먼저 읽는다.

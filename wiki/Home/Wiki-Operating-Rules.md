@@ -101,9 +101,34 @@ code@commit
 1. 기본 명령 순서는 `git fetch origin main` -> `git rev-parse main` -> `git rev-parse origin/main` 이다.
 2. 두 해시가 같으면 `wiki local main == origin/main`으로 본다.
 3. 두 해시가 같으면 `main@<hash>`를 이번 읽기/쓰기 기준으로 확정한다.
-4. `git fetch` 실패, `main` 부재, 두 해시 불일치면 최신이라고 단정하지 않는다.
-5. 이 경우 자동 `pull`, `merge`, `rebase`를 하지 않고, 제한과 현재 사용 가능한 기준 `branch + commit`만 먼저 밝힌다.
-6. 긴 작업 중 새 요청 시작 전이나 중요한 판단 직전에는 이 절차를 다시 수행한다.
+4. `git fetch`가 실패하거나 `main`이 없으면 최신이라고 단정하지 않고, 제한과 현재 사용 가능한 기준 `branch + commit`만 먼저 밝힌다.
+5. 두 해시가 다르면 먼저 `wiki local main != origin/main` 사실을 안내한다.
+6. 그 다음 로컬 `main`으로 이동할 수 있는지 확인하고, 가능하면 `git pull --ff-only origin main`으로 `origin/main`에 `fast-forward`로 맞춘다.
+7. `fast-forward`가 성공하면 새 `main@<hash>`를 기준 commit으로 다시 확정한다.
+8. `fast-forward`가 실패하거나 `main` 전환이 안 되면 자동 `merge`, `rebase`, 강제 reset은 하지 않고 실패 사유를 먼저 알린다.
+9. 긴 작업 중 새 요청 시작 전이나 중요한 판단 직전에는 이 절차를 다시 수행한다.
+
+## sync 불일치 대응 예시
+- 안내 예시:
+
+```text
+wiki 로컬 main과 origin/main이 다릅니다.
+먼저 로컬 main을 origin/main에 fast-forward로 맞춘 뒤, 새 기준 commit으로 계속 진행하겠습니다.
+```
+
+- 성공 예시:
+
+```text
+wiki local main을 origin/main@<commit>으로 fast-forward 했습니다.
+이제 main@<commit> 기준으로 계속 진행합니다.
+```
+
+- 실패 예시:
+
+```text
+wiki 로컬 main과 origin/main이 다르지만, 현재 상태에서는 main 전환 또는 fast-forward가 불가능합니다.
+자동 merge/rebase는 하지 않고, 실패 사유와 현재 기준 상태를 먼저 공유합니다.
+```
 
 ## 문서 원문 읽기 기본값
 - 커밋된 한글 Markdown 원문은 원칙적으로 `git show <ref>:<repo-relative-path>`로 먼저 읽는다.
