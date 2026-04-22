@@ -12,6 +12,7 @@ tags:
 
 ## Core
 - [[wiki/Home/README|Home]] - wiki 진입점, 읽는 순서, 핵심 링크.
+- [[wiki/Home/Project-Session-Setup|Project Session Setup]] - 프로젝트 세션에서 local card 기준 wiki 경로를 고정해 쓰기 위한 초기 세팅 안내.
 - [[wiki/Home/Wiki-Operating-Rules|Wiki Operating Rules]] - 팀 공유용 운영 규칙과 LLM 읽기/쓰기 기준.
 - [[wiki/Home/Wiki-Usage-Guide|Wiki Usage Guide]] - wiki를 언제 확인하고 언제 갱신할지, LLM 요청 예시 안내.
 - [[wiki/01-Project/README|01-Project]] - 프로젝트 목적, 범위, 핵심 흐름과 현재 정의.

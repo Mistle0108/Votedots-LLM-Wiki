@@ -10,6 +10,20 @@ tags:
 
 # log
 
+## [2026-04-22] update | formalize project-session wiki local-card setup
+- updated: `AGENTS.md`
+- updated: `README.md`
+- updated: `raw/repos/AGENTS.md`
+- updated: `raw/repos/_repo-local-card.template.md`
+- updated: `wiki/AGENTS.md`
+- updated: `wiki/Home/README.md`
+- updated: `wiki/Home/Wiki-Operating-Rules.md`
+- updated: `wiki/Home/Wiki-Usage-Guide.md`
+- added: `wiki/Home/Project-Session-Setup.md`
+- updated: `wiki/index.md`
+- updated: `wiki/log.md`
+- note: 프로젝트 세션에서 local wiki 저장소를 기본 참조 환경으로 쓰는 규칙을 명시하고, `raw/repos/{repo}.local.md`의 `wiki_repo_path`를 1차 기준으로 고정했다. 경로가 없거나 접근이 안 되면 사용자에게 한 번만 확인한 뒤 local card에 저장하고 이후 기본값으로 재사용하도록 정리했으며, 이를 그대로 따라 할 수 있는 초기 세팅 문서를 추가했다.
+
 ## [2026-04-22] update | enforce UTF-8-safe wiki reading and docs issue title prefix
 - updated: `AGENTS.md`
 - updated: `wiki/AGENTS.md`
