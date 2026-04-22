@@ -177,6 +177,11 @@ wiki 로컬 main과 origin/main이 다르지만, 현재 상태에서는 main 전
 - 정합성 판단 기준은 수정 중인 워킹트리가 아니라 확인 가능한 `branch + commit`, diff, 반영 문서 목록 기준으로 설명한다.
 - 불확실성이 큰 변경은 먼저 wiki 이슈나 짧은 초안으로 범위를 고정한 뒤 실제 문서를 수정한다.
 
+## 줄바꿈 기준
+- 텍스트 파일의 줄바꿈 기준은 `.gitattributes`를 따른다.
+- 특별한 예외가 없으면 텍스트 파일은 `LF`로 작성한다.
+- 줄바꿈 혼합(`mixed`) 상태가 보이면 같은 작업 범위에서 정규화한다.
+
 ## 규칙 변경 시 사용자 문서 동기화
 - `AGENTS.md` 계열, wiki 운영 절차, publish 절차, 요청 방식 관련 규칙을 바꾸면 `wiki/Home/Wiki-Operating-Rules.md`와 `wiki/Home/Wiki-Usage-Guide.md`를 함께 검토한다.
 - 팀 운영 설명이나 절차가 바뀌면 `wiki/Home/Wiki-Operating-Rules.md`를 업데이트한다.
