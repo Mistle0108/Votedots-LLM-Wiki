@@ -56,6 +56,16 @@ wiki 로컬 main과 origin/main이 다르지만, 현재 상태에서는 main 전
 - 미커밋 변경, 신규 파일, 워킹트리 상태가 필요할 때만 `git diff`, `git status`, 파일 시스템 읽기를 fallback으로 사용한다.
 - 같은 문서를 이미 commit 기준으로 읽었다면, 같은 턴에서 PowerShell 파일 읽기로 다시 중복 확인하지 않는 것을 기본으로 본다.
 
+## `git show` 사용 기준 표
+
+| 확인하려는 것 | 먼저 쓸 방식 | fallback | 메모 |
+| --- | --- | --- | --- |
+| 커밋된 한글 wiki 문서 원문 | `git show <ref>:<path>` | 없음 | 기준 commit을 먼저 정한다. |
+| 같은 커밋 문서의 특정 부분만 다시 확인 | `git show <ref>:<path>` 후 필요한 부분만 확인 | 없음 | 같은 턴에서 PowerShell 재확인을 기본으로 하지 않는다. |
+| 미커밋 변경 | `git diff -- <path>` | 파일 시스템 읽기 | 아직 baseline이 아니다. |
+| 신규 파일 | 파일 시스템 읽기 | 없음 | Git 객체에 아직 없어서 `git show`로 못 읽는다. |
+| 워킹트리 상태 | `git status` | 파일 시스템 읽기 | 커밋 기준 내용과 구분해서 본다. |
+
 ## wiki 브랜치 이름 기준
 - 규칙/가이드/운영 문서 수정은 `docs/<topic-slug>`를 사용한다.
 - 특정 프로젝트 PR 반영은 `pr/<project-pr-number>-<topic-slug>`를 사용한다.

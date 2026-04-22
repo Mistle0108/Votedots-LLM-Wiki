@@ -45,6 +45,16 @@ log.md            # wiki 운영 이력
 - 필요한 경우에도 전체 파일 재읽기보다 필요한 섹션만 좁혀 읽는다.
 - 커밋 기준 본문과 워킹트리 본문을 함께 읽었으면 둘을 섞어 말하지 말고 구분해서 설명한다.
 
+## `git show` 사용 기준 표
+
+| 상황 | 기본 확인 방식 | fallback | 메모 |
+| --- | --- | --- | --- |
+| 커밋된 한글 문서 원문 확인 | `git show <ref>:<path>` | 없음 | 먼저 기준 `branch + commit`을 확정한다. |
+| 같은 커밋 문서의 특정 섹션 재확인 | `git show <ref>:<path>` 후 필요한 섹션만 확인 | 없음 | 같은 턴에서 PowerShell 파일 읽기로 다시 확인하지 않는다. |
+| 미커밋 변경 확인 | `git diff -- <path>` | 파일 시스템 읽기 | baseline이 아니라 워킹트리 상태로 취급한다. |
+| 신규 untracked 파일 확인 | 파일 시스템 읽기 | 없음 | Git 객체에 아직 없으므로 `git show` 대상이 아니다. |
+| 워킹트리 전체 상태 확인 | `git status` | 파일 시스템 읽기 | 커밋 기준 내용과 섞지 말고 별도로 설명한다. |
+
 ## wiki 동기화 확인 절차
 1. 기본 명령 순서는 `git fetch origin main` -> `git rev-parse main` -> `git rev-parse origin/main` 이다.
 2. 두 해시가 같으면 `wiki local main == origin/main`으로 본다.
