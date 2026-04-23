@@ -32,9 +32,9 @@ log.md            # wiki 운영 이력
 - 단, `AGENTS.md` 계열 운영 규칙 파일은 예외로 한다.
 - 이유: `AGENTS.md`는 산출물 페이지가 아니라 LLM 행동 규칙 파일이므로, 일반 문서와 같은 메타데이터 규칙을 강제하지 않는다.
 - `index.md`는 문서 목록과 탐색 구조를 관리하고, `log.md`는 의미 있는 업데이트 이력을 관리한다.
-- 사용자의 명령을 wiki 기준으로 수행하기 전에는 먼저 wiki 로컬 저장소와 원격 `origin/main`이 같은지 확인한다.
-- 가능하면 `git fetch origin main` 후 로컬 `main`과 `origin/main`을 비교한다.
-- 원격 확인이 불가능하거나 로컬/원격이 다르면, 최신이라고 단정하지 말고 제한과 실제 사용 기준 `branch + commit`을 먼저 밝힌다.
+- 사용자의 명령을 wiki 기준으로 수행하기 전에는 먼저 `git fetch origin main`으로 원격 최신 상태를 확인한다.
+- `git fetch`가 성공하면 `git rev-parse origin/main`으로 `origin/main@<hash>`를 이번 작업 기준으로 확정한다.
+- 원격 확인이 불가능하면 최신이라고 단정하지 말고 제한과 마지막으로 확인 가능한 기준 `branch + commit`을 먼저 밝힌다.
 
 ## 문서 원문 읽기 기본값
 - 커밋된 한글 Markdown 원문은 원칙적으로 `git show <ref>:<repo-relative-path>`로 먼저 읽는다.
@@ -60,43 +60,34 @@ log.md            # wiki 운영 이력
 
 ## 작업 전 최신화 확인 원칙
 - wiki 기준으로 읽기/쓰기/판단/등록 작업을 시작하기 전에는 항상 `git fetch origin main`으로 원격 최신 상태를 먼저 확인한다.
-- 로컬 `main`과 `origin/main`이 같으면 그 commit을 이번 작업 기준으로 확정하고 진행한다.
-- 불일치하면 먼저 불일치 사실을 공유하고, 가능하면 로컬 `main`을 `origin/main`에 `fast-forward`로 맞춘 뒤 새 기준 commit을 다시 확정한다.
-- `main` 전환이 불가능하거나 `fetch` 또는 `fast-forward`가 실패하면 최신이라고 단정하지 않고, 실패 사유와 현재 기준 `branch + commit`을 먼저 공유한다.
-- 자동 `merge`, `rebase`, 강제 `reset`은 하지 않는다.
+- `git fetch`가 성공하면 `git rev-parse origin/main`으로 `origin/main@<hash>`를 이번 작업 기준으로 확정하고 진행한다.
+- 커밋 기준 문서 읽기와 판단은 원칙적으로 이 `origin/main@<hash>` 기준으로 수행한다.
+- 로컬 `main` 상태는 최신 기준 확정의 필수 조건으로 두지 않는다.
+- `git fetch`가 실패하거나 `origin/main` 해시를 읽지 못하면 최신이라고 단정하지 않고, 실패 사유와 마지막으로 확인 가능한 기준 `branch + commit`만 먼저 공유한다.
+- 자동 `pull`, `merge`, `rebase`, 강제 `reset`은 하지 않는다.
 
-## wiki 동기화 확인 절차
-1. 기본 명령 순서는 `git fetch origin main` -> `git rev-parse main` -> `git rev-parse origin/main` 이다.
-2. 두 해시가 같으면 `wiki local main == origin/main`으로 본다.
-3. 두 해시가 같으면 `main@<hash>`를 이번 읽기/쓰기 기준으로 확정한다.
-4. `git fetch`가 실패하거나 `main`이 없으면 최신이라고 단정하지 않고, 제한과 현재 사용 가능한 기준 `branch + commit`만 먼저 밝힌다.
-5. 두 해시가 다르면 먼저 `wiki local main != origin/main` 사실과, 로컬 `main`을 `origin/main`에 `fast-forward`로 맞춘 뒤 계속 진행하겠다는 계획을 짧게 안내한다.
-6. 현재 워킹트리 때문에 `main` 전환이 가능한지 확인한다. 미커밋 변경 때문에 전환이 안 되면 자동 정리하지 않고 실패 사유를 먼저 밝힌다.
-7. 전환 가능하면 로컬 `main`으로 이동해 `git pull --ff-only origin main`으로 `origin/main`에 맞춘다.
-8. `fast-forward`가 성공하면 `git rev-parse main`으로 새 기준 commit을 다시 확인하고, 그 commit을 이번 읽기/쓰기 기준으로 확정한다.
-9. `fast-forward`가 실패하면 자동 `merge`, `rebase`, 강제 reset을 하지 않고 실패 사유를 먼저 밝힌다.
-10. 긴 작업 중 새 사용자 명령이나 중요한 판단 직전에는 이 절차를 다시 수행한다.
+## 원격 최신 확인 절차
+1. 기본 명령 순서는 `git fetch origin main` -> `git rev-parse origin/main` 이다.
+2. 두 명령이 성공하면 `origin/main@<hash>`를 이번 읽기/쓰기 기준으로 확정한다.
+3. 커밋된 문서는 원칙적으로 `git show origin/main:<path>` 또는 확정된 `git show <ref>:<path>` 기준으로 읽는다.
+4. `git fetch`가 실패하면 최신이라고 단정하지 않고, 실패 사유와 마지막으로 확인 가능한 기준 `branch + commit`만 먼저 밝힌다.
+5. `origin/main` 해시를 읽지 못하면 현재 세션에서 최신 기준 ref를 확정하지 못했다는 사실을 먼저 밝힌다.
+6. 긴 작업 중 새 사용자 명령이나 중요한 판단 직전에는 이 절차를 다시 수행한다.
 
-## sync 불일치 대응 문구 예시
-- 불일치 안내 예시:
+## 최신 확인 응답 예시
+- 성공 예시:
 
 ```text
-wiki 로컬 main과 origin/main이 다릅니다.
-먼저 로컬 main을 origin/main에 fast-forward로 맞춘 뒤, 새 기준 commit으로 계속 진행하겠습니다.
+git fetch origin main 기준으로 최신 상태를 확인했고,
+이번 작업 기준은 origin/main@<commit>입니다.
+이 기준으로 계속 진행합니다.
 ```
 
-- fast-forward 성공 예시:
+- 실패 예시:
 
 ```text
-wiki local main을 origin/main@<commit>으로 fast-forward 했습니다.
-이제 main@<commit> 기준으로 계속 진행합니다.
-```
-
-- fast-forward 실패 예시:
-
-```text
-wiki 로컬 main과 origin/main이 다르지만, 현재 상태에서는 main 전환 또는 fast-forward가 불가능합니다.
-자동 merge/rebase는 하지 않고, 실패 사유와 현재 기준 상태를 먼저 공유합니다.
+git fetch origin main이 실패해서 현재 origin/main을 최신 기준이라고 단정할 수 없습니다.
+실패 사유와 마지막으로 확인 가능한 기준 상태를 먼저 공유합니다.
 ```
 
 ## 프로젝트 세션 연계 규칙
@@ -108,7 +99,7 @@ wiki 로컬 main과 origin/main이 다르지만, 현재 상태에서는 main 전
 - 현재 shell 슬롯 값이 없거나 현재 세션에서 접근할 수 없으면 자동 추정하지 말고 사용자에게 경로를 한 번만 확인한다.
 - 확인한 경로는 같은 파일의 현재 shell 슬롯에 저장하고 이후 기본값으로 재사용한다.
 - 프로젝트 세션의 shell에서 실제로 접근 가능한 경로를 써야 한다. 프로젝트 `execution_path`가 WSL이면 wiki 경로도 WSL에서 보이는 경로를 쓴다.
-- 프로젝트 세션에서는 로컬 wiki를 참조 문서로 읽고, 각 사용자 명령과 중요한 판단 단계 전에 wiki 로컬/원격 일치 여부를 다시 확인한다.
+- 프로젝트 세션에서는 로컬 wiki를 참조 문서로 읽고, 각 사용자 명령과 중요한 판단 단계 전에 `git fetch origin main`으로 기준 `origin/main` 최신 ref를 다시 확인한다.
 - 프로젝트 저장소 경로가 필요하면 `raw/repos/{repo}.local.md`의 `execution_path`를 먼저 확인하고, 없으면 세션 입력으로 받는다.
 - 같은 세션에서 이미 한 번 확인한 wiki repo 경로가 있으면 다시 묻지 않고 그 값을 계속 사용한다.
 - `raw/repos/{repo}.local.md`는 wiki repo 경로 bootstrap 1차 기준으로 쓰지 않는다.
@@ -119,7 +110,7 @@ wiki 로컬 main과 origin/main이 다르지만, 현재 상태에서는 main 전
 
 ## LLM 기본 읽기 순서
 - 사용자가 `wiki 읽고 내용 확인해`, `wiki 보고 정리해`, `wiki 기준으로 말해줘`라고 하면 아래 순서로 먼저 읽는다.
-  1. wiki 로컬 `main`과 `origin/main`의 최신 상태가 같은지 확인하고, 이번 답변의 기준 `branch + commit`을 확정한다.
+  1. `git fetch origin main`으로 원격 최신 상태를 확인하고, 이번 답변의 기준 `origin/main@<hash>`를 확정한다.
   2. 프로젝트 연계 질문이면 프로젝트 저장소 `execution_path`, 현재 실행 컨텍스트, 프로젝트 저장소의 `./.local/wiki-repo.yml` 현재 shell 슬롯 또는 같은 세션에서 이미 확인한 wiki repo 경로를 확인한다.
   3. 커밋된 문서는 원칙적으로 `git show <ref>:<path>`로 원문을 읽는다.
   4. `wiki/index.md`
@@ -153,12 +144,12 @@ wiki 로컬 main과 origin/main이 다르지만, 현재 상태에서는 main 전
 - wiki에 없는 내용은 추측하지 않는다.
 - wiki로 답하기 부족하면 어떤 문서가 부족한지 먼저 말한다.
 - 필요할 때만 `raw/`를 마지막 수단으로 읽는다.
-- wiki 로컬/원격 최신 상태를 확인하지 못했으면 최신 기준이라고 단정하지 않는다.
+- `git fetch origin main`으로 기준 ref를 확인하지 못했으면 최신 기준이라고 단정하지 않는다.
 - wiki를 근거로 현재 상태나 다음 작업을 말할 때는 기준 `branch + commit` 또는 확인 실패 사유를 먼저 밝힌다.
 - 커밋 기준 본문과 워킹트리 본문을 함께 썼으면 어떤 부분이 어느 기준인지 구분해서 설명한다.
 - 사람용 안내 문서와 LLM 규칙 문서가 동시에 보이면, LLM은 항상 `AGENTS.md` 계열 규칙을 우선한다.
 - 커밋된 한글 문서 원문 확인은 처음부터 Git 객체 기준으로 수행하고, fallback 사유가 없으면 PowerShell 파일 읽기로 우회하지 않는다.
-- sync 불일치가 있으면 `불일치 안내 -> fast-forward 시도/실패 결과 -> 새 기준 commit 또는 실패 사유` 순서로 짧게 설명한다.
+- 최신 확인 결과는 `fetch 성공 -> origin/main@<hash> 확정` 또는 `fetch 실패 -> 실패 사유와 마지막 기준 상태` 순서로 짧게 설명한다.
 - 프로젝트 세션에서 wiki 경로를 설명할 때는 현재 기준 wiki repo 경로와 그 경로를 어디서 확정했는지(`./.local/wiki-repo.yml` / 같은 세션 확인값)를 함께 밝힌다.
 
 ## wiki 사용법 질문 응답 원칙
@@ -290,7 +281,7 @@ wiki 로컬 main과 origin/main이 다르지만, 현재 상태에서는 main 전
 - `비고`에는 남은 작업, 의도적으로 제외한 범위, 리뷰 포인트만 짧게 적는다.
 
 ## LLM 작성 순서
-1. 대상 프로젝트 `repo / branch / commit`과 wiki 로컬/원격 최신 상태를 확인한다.
+1. 대상 프로젝트 `repo / branch / commit`과 wiki 기준 `origin/main@<hash>`를 확인한다.
 2. 프로젝트 저장소 `execution_path`와 현재 실행 컨텍스트를 확인한다.
 3. 커밋된 문서는 가능하면 `git show <ref>:<path>`로 읽는다.
 4. `wiki/index.md`, `wiki/Home/README.md`, `wiki/03-Status/Current-State.md`, `wiki/03-Status/Next-Work.md`를 확인한다.
@@ -320,7 +311,7 @@ wiki 로컬 main과 origin/main이 다르지만, 현재 상태에서는 main 전
 
 ## LLM publish 절차
 1. 프로젝트 브랜치 PR 완료 또는 현재 완료 작업 기준이 정리된 상태에서 사용자 wiki 등록 요청을 확인한다. `지금 완료된 작업 wiki에 등록해줘.` 같은 짧은 요청도 여기에 포함한다.
-2. wiki 로컬 `main`과 `origin/main`이 같은지 다시 확인한다.
+2. `git fetch origin main`으로 wiki 기준 `origin/main@<hash>`를 다시 확인한다.
 3. wiki 반영 브랜치는 wiki 저장소에서 생성한다. 프로젝트 저장소에서 같은 이름의 wiki 반영 브랜치를 만들지 않는다.
    - 기본 형식: `docs/<topic-slug>`
    - 프로젝트 PR 연계 형식: `pr/<project-pr-number>-<topic-slug>`

@@ -70,7 +70,7 @@ wiki_repo_paths:
 ## 추천 검증 요청문
 ```text
 프로젝트 세션에서 `./.local/wiki-repo.yml`의 현재 shell 슬롯 기준으로 local wiki repo 경로를 먼저 확인하고,
-wiki 로컬 main과 origin/main 동기화 여부 확인해줘.
+git fetch origin main 기준으로 wiki 최신 상태와 기준 commit 확인해줘.
 ```
 
 ```text

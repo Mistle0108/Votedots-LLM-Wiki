@@ -93,41 +93,32 @@ code@commit
 - 기준 진실은 항상 `code@commit`이다.
 - 미커밋 변경은 baseline에 포함하지 않는다.
 - 같은 질문은 같은 `commit` 기준이면 같은 답이 나와야 한다.
-- 사용자의 명령을 wiki 기준으로 수행하기 전에는 먼저 wiki 로컬 저장소와 원격 `origin/main`의 최신 상태가 같은지 확인한다.
-- 가능하면 `git fetch origin main` 후 로컬 `main`과 `origin/main`을 비교한다.
-- 원격 확인이 불가능하거나 로컬/원격이 다르면 최신이라고 단정하지 말고, 제한과 실제 사용 기준 `branch + commit`을 먼저 밝힌다.
+- 사용자의 명령을 wiki 기준으로 수행하기 전에는 먼저 `git fetch origin main`으로 원격 최신 상태를 확인한다.
+- `git fetch`가 성공하면 `git rev-parse origin/main`으로 `origin/main@<hash>`를 기준 commit으로 확정한다.
+- 원격 확인이 불가능하면 최신이라고 단정하지 말고, 제한과 실제 사용 기준 `branch + commit`을 먼저 밝힌다.
 
 ## wiki 동기화 확인 절차
-1. 기본 명령 순서는 `git fetch origin main` -> `git rev-parse main` -> `git rev-parse origin/main` 이다.
-2. 두 해시가 같으면 `wiki local main == origin/main`으로 본다.
-3. 두 해시가 같으면 `main@<hash>`를 이번 읽기/쓰기 기준으로 확정한다.
-4. `git fetch`가 실패하거나 `main`이 없으면 최신이라고 단정하지 않고, 제한과 현재 사용 가능한 기준 `branch + commit`만 먼저 밝힌다.
-5. 두 해시가 다르면 먼저 `wiki local main != origin/main` 사실을 안내한다.
-6. 그 다음 로컬 `main`으로 이동할 수 있는지 확인하고, 가능하면 `git pull --ff-only origin main`으로 `origin/main`에 `fast-forward`로 맞춘다.
-7. `fast-forward`가 성공하면 새 `main@<hash>`를 기준 commit으로 다시 확정한다.
-8. `fast-forward`가 실패하거나 `main` 전환이 안 되면 자동 `merge`, `rebase`, 강제 reset은 하지 않고 실패 사유를 먼저 알린다.
-9. 긴 작업 중 새 요청 시작 전이나 중요한 판단 직전에는 이 절차를 다시 수행한다.
+1. 기본 명령 순서는 `git fetch origin main` -> `git rev-parse origin/main` 이다.
+2. 두 명령이 성공하면 `origin/main@<hash>`를 이번 읽기/쓰기 기준으로 확정한다.
+3. 커밋된 문서는 원칙적으로 `git show origin/main:<path>` 또는 확정된 `git show <ref>:<path>` 기준으로 읽는다.
+4. `git fetch`가 실패하면 최신이라고 단정하지 않고, 제한과 마지막으로 확인 가능한 기준 `branch + commit`만 먼저 밝힌다.
+5. `origin/main` 해시를 읽지 못하면 현재 세션에서 최신 기준 ref를 확정하지 못했다는 사실을 먼저 밝힌다.
+6. 긴 작업 중 새 요청 시작 전이나 중요한 판단 직전에는 이 절차를 다시 수행한다.
 
-## sync 불일치 대응 예시
-- 안내 예시:
-
-```text
-wiki 로컬 main과 origin/main이 다릅니다.
-먼저 로컬 main을 origin/main에 fast-forward로 맞춘 뒤, 새 기준 commit으로 계속 진행하겠습니다.
-```
-
+## 최신 확인 응답 예시
 - 성공 예시:
 
 ```text
-wiki local main을 origin/main@<commit>으로 fast-forward 했습니다.
-이제 main@<commit> 기준으로 계속 진행합니다.
+git fetch origin main 기준으로 최신 상태를 확인했고,
+이번 작업 기준은 origin/main@<commit>입니다.
+이 기준으로 계속 진행합니다.
 ```
 
 - 실패 예시:
 
 ```text
-wiki 로컬 main과 origin/main이 다르지만, 현재 상태에서는 main 전환 또는 fast-forward가 불가능합니다.
-자동 merge/rebase는 하지 않고, 실패 사유와 현재 기준 상태를 먼저 공유합니다.
+git fetch origin main이 실패해서 현재 origin/main을 최신 기준이라고 단정할 수 없습니다.
+실패 사유와 마지막으로 확인 가능한 기준 상태를 먼저 공유합니다.
 ```
 
 ## 작업 브랜치 생성 기준
@@ -203,7 +194,7 @@ wiki 로컬 main과 origin/main이 다르지만, 현재 상태에서는 main 전
 - `raw/repos/{repo}.local.md`는 wiki 경로 bootstrap 1차 기준이 아니라 `execution_path` 같은 보조 로컬 메타데이터용으로만 사용한다.
 - 프로젝트 코드 확인, 구현, 검증은 프로젝트 저장소에서 수행하고, wiki 저장소는 문서 반영 브랜치와 공유 문서 관리 용도로만 사용한다.
 - wiki 반영 브랜치 생성, wiki 문서 commit, wiki PR 생성과 merge는 모두 wiki 저장소에서 수행한다. 프로젝트 저장소에서는 반영 범위만 정리하고 실제 git 작업은 하지 않는다.
-- 프로젝트 세션에서 여러 요청을 이어 처리할 때도, 새 요청 시작 전과 중요한 판단 단계 전에는 wiki 로컬/원격 일치 여부를 다시 확인한다.
+- 프로젝트 세션에서 여러 요청을 이어 처리할 때도, 새 요청 시작 전과 중요한 판단 단계 전에는 `git fetch origin main`으로 기준 `origin/main` 최신 ref를 다시 확인한다.
 - 환경 변수나 shell 초기화 파일 설정은 필수로 두지 않는다.
 - 프로젝트 작업이 끝나고 브랜치 PR이 완료되면, 사용자는 같은 프로젝트 세션에서 `지금 완료된 작업 wiki에 등록해줘.`처럼 짧게 wiki 등록을 요청할 수 있다.
 
@@ -331,7 +322,7 @@ commit:       # 근거 commit hash
   - 같은 주제의 작은 수정은 한 번의 로그 엔트리로 묶음
 
 ## ingest 순서
-1. wiki 로컬 `main`과 `origin/main` 최신 상태를 확인
+1. `git fetch origin main`으로 기준 `origin/main@<hash>`를 확인
 2. 대상 `repo / branch / commit hash` 확정
 3. raw 참조 카드 갱신 또는 확인
 4. 코드 / issue / PR 읽기
@@ -344,7 +335,7 @@ commit:       # 근거 commit hash
 
 ## LLM 기본 읽기 순서
 - 사용자가 `wiki 읽고 내용 확인해`, `wiki 보고 정리해`, `wiki 기준으로 말해줘`라고 하면 아래 순서로 먼저 읽는다.
-  1. wiki 로컬 `main`과 `origin/main` 최신 상태를 확인한다.
+  1. `git fetch origin main`으로 최신 상태를 확인하고 기준 `origin/main@<hash>`를 확정한다.
   2. 커밋된 문서는 원칙적으로 `git show <ref>:<path>`로 원문을 읽는다.
   3. `wiki/index.md`
   4. `wiki/Home/README.md`
@@ -389,7 +380,7 @@ commit:       # 근거 commit hash
 
 ## publish 규칙
 1. 프로젝트 브랜치 PR이 완료되고 사용자가 wiki 등록을 요청하면, 같은 프로젝트 세션에서 기준 프로젝트 PR/merge commit과 반영 범위를 먼저 정리한다. `지금 완료된 작업 wiki에 등록해줘.` 같은 짧은 요청도 여기에 포함한다.
-2. wiki 반영 직전에는 wiki 로컬 `main`과 `origin/main`이 같은지 다시 확인한다.
+2. wiki 반영 직전에는 `git fetch origin main`으로 기준 `origin/main@<hash>`를 다시 확인한다.
 3. wiki 반영 브랜치 생성, wiki 문서 commit, wiki PR 생성과 merge는 모두 wiki 저장소에서 수행한다. 프로젝트 저장소에서 wiki 반영 브랜치를 만들지 않는다.
 4. wiki 반영은 direct push가 아니라 `branch + PR` 기준으로 운영한다.
 5. wiki 반영 브랜치는 기본적으로 `docs/<topic-slug>`를 사용한다.
@@ -411,4 +402,4 @@ commit:       # 근거 commit hash
 - `05-Sources`에는 사실만 적는다.
 - `03-Status`에는 현재 사실과 다음 행동을 적는다.
 - `04-Records`에는 작업, 문제, 결정을 축적한다.
-- wiki는 항상 `code@commit` 기준으로 읽고 쓰며, 사용 전에는 로컬 `main`과 `origin/main` 일치 여부를 확인한다.
+- wiki는 항상 `code@commit` 기준으로 읽고 쓰며, 사용 전에는 `git fetch origin main`으로 `origin/main@<hash>`를 기준 ref로 확정한다.

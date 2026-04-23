@@ -15,9 +15,9 @@ tags:
 작업 현황은 별도 보드가 아니라 공식 문서를 읽었을 때 자연스럽게 파악되도록 유지한다.
 
 ## 사용 전 확인
-- wiki를 기준으로 현재 상태, 다음 작업, 반영 범위를 말하기 전에는 먼저 wiki 로컬 `main`과 `origin/main`이 같은지 확인한다.
+- wiki를 기준으로 현재 상태, 다음 작업, 반영 범위를 말하기 전에는 먼저 `git fetch origin main`으로 최신 상태를 확인하고 `origin/main@<hash>`를 기준으로 잡는다.
 - 프로젝트 작업은 프로젝트 저장소 세션에서 진행하고, wiki는 같은 세션에서 로컬 참조 문서로 읽는다.
-- 원격 최신 확인이 불가능하거나 로컬/원격이 다르면 최신이라고 단정하지 말고, 실제 사용 기준 `branch + commit`을 먼저 밝힌다.
+- 원격 최신 확인이 불가능하면 최신이라고 단정하지 말고, 실제 사용 기준 `branch + commit`을 먼저 밝힌다.
 
 ## 프로젝트 세션 초기 세팅
 - 프로젝트 세션에서 local wiki 저장소를 기본 참조로 쓰려면 먼저 [Project Session Setup](wiki/Home/Project-Session-Setup.md)를 따라 초기 세팅을 맞춘다.
@@ -39,7 +39,7 @@ tags:
 | 항목 | 값 |
 | --- | --- |
 | 코드 기준 커밋 | `Votedots main@31d22b3535627b3a0a56ea1cf9e41411475f72fd` |
-| wiki 사용 원칙 | 로컬 `main`과 `origin/main` 일치 확인 후 읽기 |
+| wiki 사용 원칙 | `git fetch origin main` 후 `origin/main@<hash>` 기준으로 읽기 |
 | 프로젝트 세션 초기 세팅 | [[wiki/Home/Project-Session-Setup|Project Session Setup]] |
 | 프로젝트 정의 문서 | [[wiki/01-Project/README|01-Project]] |
 | 구조 문서 | [[wiki/02-Architecture/System-Reference|System Reference]] |
@@ -53,7 +53,7 @@ tags:
 | 사용 가이드 문서 | [[wiki/Home/Wiki-Usage-Guide|Wiki Usage Guide]] |
 
 ## 읽는 순서
-1. wiki 로컬 `main`과 `origin/main` 최신 상태를 확인한다.
+1. `git fetch origin main`으로 최신 상태를 확인하고 기준 `origin/main@<hash>`를 확정한다.
 2. [[wiki/index|index]]
 3. [[wiki/Home/README|Home]]
 4. [[wiki/03-Status/Current-State|Current State]]
@@ -81,7 +81,7 @@ tags:
 - 먼저 기준 프로젝트 PR/merge commit 또는 완료 작업 범위를 확인하고, `05-Sources`, `03-Status`, 필요 시 `04-Records`, `log.md`, `index.md` 반영 여부를 정리한다.
 - 프로젝트 브랜치 PR이 완료되고 사용자가 wiki 등록을 요청하면, 같은 프로젝트 세션에서 반영 범위를 먼저 정리한다.
 - 반영 범위 정리는 프로젝트 세션에서 하더라도, 실제 wiki 반영 브랜치 생성과 wiki git 작업은 wiki 저장소에서 진행한다.
-- wiki 반영 직전에는 wiki 로컬 `main`과 `origin/main`이 같은지 다시 확인한다.
+- wiki 반영 직전에는 `git fetch origin main`으로 기준 `origin/main@<hash>`를 다시 확인한다.
 - wiki 반영 브랜치는 규칙/가이드 수정이면 `docs/<topic-slug>`를 사용하고, 특정 프로젝트 PR에 대응하는 반영이면 `pr/<project-pr-number>-<topic-slug>` 형식을 사용한다.
 - 새로 작성하는 GitHub `issue`/`PR` 제목, 본문, 요약은 기본적으로 한글로 작성한다.
 - 동기화 확인 명령, PR 반영 체크리스트, `<topic-slug>` 규칙의 상세 내용은 `wiki/AGENTS.md`와 `Wiki-Operating-Rules.md`를 따른다.

@@ -10,6 +10,16 @@ tags:
 
 # log
 
+## [2026-04-23] update | switch wiki latest baseline to fetch-based origin main
+- updated: `AGENTS.md`
+- updated: `wiki/AGENTS.md`
+- updated: `wiki/Home/README.md`
+- updated: `wiki/Home/Project-Session-Setup.md`
+- updated: `wiki/Home/Wiki-Operating-Rules.md`
+- updated: `wiki/Home/Wiki-Usage-Guide.md`
+- updated: `wiki/log.md`
+- note: wiki 최신 기준을 로컬 `main`과 `origin/main` 비교/fast-forward 중심에서 `git fetch origin main` 후 `origin/main@<hash>`를 바로 기준 ref로 확정하는 방식으로 단순화했다. fetch 실패 시 최신이라고 단정하지 않고 실패 사유와 마지막으로 확인 가능한 기준 상태를 먼저 설명하도록 정리했다.
+
 ## [2026-04-23] update | clarify one-time AGENTS read and conditional reread
 - updated: `AGENTS.md`
 - updated: `wiki/AGENTS.md`
