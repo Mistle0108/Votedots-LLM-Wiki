@@ -2,7 +2,7 @@
 title: votedots-overview
 type: source
 status: active
-updated: 2026-04-21
+updated: 2026-04-23
 tags:
   - wiki
   - source
@@ -10,21 +10,21 @@ tags:
   - votedots
 source_kind: repo
 source_ref: votedots/main
-commit: 31d22b3535627b3a0a56ea1cf9e41411475f72fd
+commit: fecd28db8d164c4cbfe2dab72e20df395380321b
 ---
 
 # votedots-overview
 
 ## 문서 목적
-이 문서는 `votedots` repo의 `main@31d22b3535627b3a0a56ea1cf9e41411475f72fd` 기준 사실 요약이다.
+이 문서는 `votedots` repo의 `main@fecd28db8d164c4cbfe2dab72e20df395380321b` 기준 사실 요약이다.
 
 ## 소스 기준
 | 항목 | 값 |
 | --- | --- |
 | Repo | `votedots` |
 | Branch | `main` |
-| Commit | `31d22b3535627b3a0a56ea1cf9e41411475f72fd` |
-| Verified | `2026-04-21` |
+| Commit | `fecd28db8d164c4cbfe2dab72e20df395380321b` |
+| Verified | `2026-04-23` |
 
 ## 저장소 요약
 - 프런트엔드는 React 19 + Vite + React Router 기반 단일 페이지 앱이다.
@@ -65,9 +65,9 @@ backend/src/
 | 라운드 관리 | 라운드 시작/종료, 완료 라운드 조회, 라운드 요약과 스냅샷 조회 API가 있다. | `backend/src/modules/round/*` |
 | 투표 | 투표 제출, 라운드별 투표 상태 조회, 현재 스코어 조회 API가 있다. | `backend/src/modules/vote/*` |
 | 플레이 UI | `CanvasPage`에서 캔버스, 투표 패널, 히스토리 패널, 요약 모달, 인트로 가이드를 조합한다. | `frontend/src/pages/canvas/*` |
-| 캔버스 UI | 캔버스 컨테이너, 화면 렌더링, 좌표 이동, 미니맵, 체크 로더가 구현돼 있다. | `frontend/src/features/gameplay/canvas/*` |
+| 캔버스 UI | 캔버스 컨테이너, 화면 렌더링, 초기 중앙 viewport, 좌표 이동, 미니맵, interaction guard가 구현돼 있다. | `frontend/src/features/gameplay/canvas/*` |
 | 라운드 / 세션 UI | 라운드 상태, 타이머, 세션 부트스트랩, 소켓 연동, 참여자 상태 관리가 구현돼 있다. | `frontend/src/features/gameplay/round/*`, `frontend/src/features/gameplay/session/*` |
-| 히스토리 / 요약 | 라운드 요약, 게임 요약, 스냅샷 URL 기반 히스토리 패널이 있다. | `frontend/src/features/gameplay/history/*`, `backend/src/modules/history/*`, `backend/src/modules/summary/*` |
+| 히스토리 / 요약 | 라운드 요약, 게임 요약, timeline 기반 history panel, snapshot preview 흐름이 있다. | `frontend/src/features/gameplay/history/*`, `backend/src/modules/history/*`, `backend/src/modules/summary/*` |
 
 ## 핵심 모듈
 | 모듈 | 사실 | 주요 경로 |
@@ -90,4 +90,5 @@ backend/src/
 - 백엔드 `package.json`의 `test` 스크립트는 placeholder error를 출력한다.
 - `main` 기준 작업 트리 및 현재 `develop` 브랜치의 미커밋 변경은 이 문서에 포함하지 않았다.
 - 사용자별 실행 경로(`execution_path`)는 shared wiki에 기록하지 않고 `raw/repos/*.local.md` 또는 세션 입력으로만 관리한다.
-- `dfb53af..31d22b3` 범위에서는 `.github/ISSUE_TEMPLATE/feature-template.md`, `.github/pull-request-template.md`만 변경됐고 애플리케이션 코드 변경은 확인되지 않았다.
+- `0abee77..f6d9f3c` 범위에서는 history timeline, 중앙 viewport, summary modal, refresh/drag/zoom interaction polish가 반영됐다.
+- `7c47bac..fecd28d` 범위는 `.gitignore`, `AGENTS.md` 중심의 wiki 사용/세션 규칙 정리이며 애플리케이션 동작 변경은 확인하지 않았다.

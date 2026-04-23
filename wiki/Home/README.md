@@ -39,7 +39,7 @@ tags:
 ## 현재 기준
 | 항목 | 값 |
 | --- | --- |
-| 코드 기준 커밋 | `Votedots main@31d22b3535627b3a0a56ea1cf9e41411475f72fd` |
+| 코드 기준 커밋 | `Votedots main@fecd28db8d164c4cbfe2dab72e20df395380321b` |
 | wiki 사용 원칙 | `git fetch origin main` 후 `origin/main@<hash>` 기준으로 읽기 |
 | 프로젝트 세션 초기 세팅 | [[wiki/Home/Project-Session-Setup|Project Session Setup]] |
 | 프로젝트 정의 문서 | [[wiki/01-Project/README|01-Project]] |
@@ -97,6 +97,7 @@ tags:
 - wiki 내부 작업 규칙: `wiki/AGENTS.md`
 
 ## baseline 상태
-- 현재 baseline은 `Votedots main@31d22b3535627b3a0a56ea1cf9e41411475f72fd` 기준으로 near-ready 상태다.
+- 현재 baseline은 `Votedots main@fecd28db8d164c4cbfe2dab72e20df395380321b` 기준으로 near-ready 상태다.
 - `Project / Architecture / Status / Records / Sources` 핵심 문서 축은 연결되어 있다.
+- history timeline, 중앙 viewport, summary modal, interaction polish 반영까지 문서 기준선에 포함돼 있다.
 - `Next Work`에 남아 있는 항목은 문서 공백보다 프로젝트 구현 / 정렬 과제에 가깝다.

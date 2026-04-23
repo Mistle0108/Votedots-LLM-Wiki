@@ -2,7 +2,7 @@
 title: PR Sources
 type: sources-pr-index
 status: active
-updated: 2026-04-21
+updated: 2026-04-23
 tags:
   - wiki
   - sources
@@ -27,6 +27,12 @@ tags:
 - 테스트 확인 항목
 
 ## 현재 문서
+- [[wiki/05-Sources/prs/PR-259-prevent-cell-select-on-zoom-reset|PR-259]] - zoom reset 클릭이 셀 선택으로 이어지지 않도록 interaction guard 추가.
+- [[wiki/05-Sources/prs/PR-257-prevent-image-drag-ghost|PR-257]] - canvas와 게임 관련 이미지 drag ghost 방지.
+- [[wiki/05-Sources/prs/PR-255-history-refresh-dedup-and-snapshot-fix|PR-255]] - refresh 이후 history 중복과 snapshot 표시 오류 수정.
+- [[wiki/05-Sources/prs/PR-253-game-summary-modal-adjustments|PR-253]] - 게임 종료 통계 수치와 summary modal 구성 수정.
+- [[wiki/05-Sources/prs/PR-240-initial-center-viewport|PR-240]] - 초기 진입 시 중앙 viewport 적용.
+- [[wiki/05-Sources/prs/PR-238-timeline-based-history-panel|PR-238]] - history panel을 timeline 기반 조회 구조로 확장.
 - [[wiki/05-Sources/prs/PR-233-sparse-grid-chunk-rendering|PR-233]] - sparse grid + chunk 렌더링 구조 전환.
 - [[wiki/05-Sources/prs/PR-210-separate-game-history-panel-from-canvas-page|PR-210]] - history panel을 canvas page에서 feature 영역으로 분리.
 - [[wiki/05-Sources/prs/PR-211-round-snapshot-entity-and-storage-path|PR-211]] - round snapshot entity와 storage path 구성 추가.
