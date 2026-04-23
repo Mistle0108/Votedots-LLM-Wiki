@@ -17,6 +17,7 @@ tags:
 ## 사용 전 확인
 - wiki를 기준으로 현재 상태, 다음 작업, 반영 범위를 말하기 전에는 먼저 `git fetch origin main`으로 최신 상태를 확인하고 `origin/main@<hash>`를 기준으로 잡는다.
 - 프로젝트 작업은 프로젝트 저장소 세션에서 진행하고, wiki는 같은 세션에서 로컬 참조 문서로 읽는다.
+- 프로젝트 세션에서 wiki 경로 bootstrap과 `wiki` 요청 해석 기준은 프로젝트 저장소의 `AGENTS.md`를 따른다.
 - 원격 최신 확인이 불가능하면 최신이라고 단정하지 말고, 실제 사용 기준 `branch + commit`을 먼저 밝힌다.
 
 ## 프로젝트 세션 초기 세팅
@@ -91,7 +92,8 @@ tags:
 - 프로젝트 세션 초기 세팅: [[wiki/Home/Project-Session-Setup|Project Session Setup]]
 - 팀 공유용 운영 설명서: [[wiki/Home/Wiki-Operating-Rules|Wiki Operating Rules]]
 - 실제 사용 가이드: [[wiki/Home/Wiki-Usage-Guide|Wiki Usage Guide]]
-- LLM 전역 규칙: `/AGENTS.md`
+- 프로젝트 세션 요청 해석 기준: 프로젝트 저장소의 `/AGENTS.md`
+- wiki 저장소 루트 진입 규칙: `/AGENTS.md`
 - wiki 내부 작업 규칙: `wiki/AGENTS.md`
 
 ## baseline 상태

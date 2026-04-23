@@ -16,8 +16,9 @@
 - 마지막 요청은 현재 프로젝트 세션의 완료 작업 기준으로 wiki 반영 범위 정리 -> 대상 문서 확인 -> wiki 반영 절차 제안까지 이어지는 요청으로 본다.
 
 LLM 운영 규칙:
-- [AGENTS.md](AGENTS.md)
-- [wiki/AGENTS.md](wiki/AGENTS.md)
+- 프로젝트 세션에서 wiki 요청 해석과 경로 bootstrap 기준은 프로젝트 저장소의 `AGENTS.md`를 따른다.
+- [AGENTS.md](AGENTS.md): wiki 저장소 루트 진입 규칙과 전역 기본값
+- [wiki/AGENTS.md](wiki/AGENTS.md): wiki 내부 읽기/쓰기/publish 상세 규칙
 
 개인 로컬 설정:
 - 프로젝트 세션용 wiki 경로는 프로젝트 repo의 `./.local/wiki-repo.yml`에 저장한다.

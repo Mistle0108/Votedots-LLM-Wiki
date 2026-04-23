@@ -10,6 +10,21 @@ tags:
 
 # log
 
+## [2026-04-23] update | slim wiki root AGENTS and move interpretation source to project repo
+- added: `repo-AGENTS.md`
+- updated: `AGENTS.md`
+- updated: `wiki/AGENTS.md`
+- updated: `wiki/Home/Wiki-Operating-Rules.md`
+- updated: `wiki/Home/README.md`
+- updated: `README.md`
+- updated: `wiki/log.md`
+- note: wiki 저장소 루트 `AGENTS.md`를 wiki repo 직접 진입 시의 entry 규칙과 전역 기본값 중심으로 더 얇게 정리했다. 프로젝트 세션의 wiki 경로 bootstrap과 요청 해석 기준 진실은 프로젝트 저장소의 `AGENTS.md`에 두고, `wiki/AGENTS.md`는 연결된 wiki 저장소가 확정된 뒤의 상세 작업 절차를 담당하도록 역할을 재정리했다. 다른 프로젝트에도 복사해 쓸 수 있는 프로젝트 repo용 `repo-AGENTS.md` 템플릿도 추가했다.
+
+## [2026-04-23] update | clarify project-session wiki interpretation source and prompt examples
+- updated: `wiki/Home/Wiki-Operating-Rules.md`
+- updated: `wiki/Home/Wiki-Usage-Guide.md`
+- note: 연결된 wiki 저장소 문서 해석과 요청 해석 규칙의 기준 진실은 프로젝트 저장소의 `AGENTS.md`에 두고, `Wiki-Usage-Guide`는 사람용 요청 예시 중심 문서로 더 분리했다. `wiki 저장소 최신이야?` 같은 저장소 최신 확인과 `최근 프로젝트 변경사항이 wiki 문서에 반영됐는지` 같은 문서 반영 점검을 별도 흐름으로 구분하고, 문서 반영 점검용 추천 요청 문장을 추가했다.
+
 ## [2026-04-23] update | switch wiki latest baseline to fetch-based origin main
 - updated: `AGENTS.md`
 - updated: `wiki/AGENTS.md`
