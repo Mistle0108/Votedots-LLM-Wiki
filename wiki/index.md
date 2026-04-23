@@ -31,12 +31,13 @@ tags:
 - [[wiki/02-Architecture/Operations|Operations]] - 운영 아키텍처 구조, 배포 topology, 외부 의존성.
 
 ## Status
-- [[wiki/03-Status/Current-State|Current State]] - `main@31d22b3` 기준 완료/부분 완료/미완료 상태.
+- [[wiki/03-Status/Current-State|Current State]] - `main@fecd28d` 기준 완료/부분 완료/미완료 상태.
 - [[wiki/03-Status/Next-Work|Next Work]] - 다음 우선 작업과 선행 조건.
 
 ## Records
 - [[wiki/04-Records/README|Records Home]] - Worklog / Issues / Decisions 진입점.
 - [[wiki/04-Records/Worklog/README|Worklog]] - 작업 수행 이력.
+- [[wiki/04-Records/Worklog/WK-2026-04-22-01-history-timeline-and-canvas-polish|WK-2026-04-22-01]] - history timeline, summary modal, canvas interaction polish 기록.
 - [[wiki/04-Records/Worklog/WK-2026-04-21-01-sparse-grid-chunk-rendering|WK-2026-04-21-01]] - sparse grid + chunk 렌더 구조 전환 기록.
 - [[wiki/04-Records/Worklog/WK-2026-04-18-01-round-snapshot-storage-preview|WK-2026-04-18-01]] - round snapshot 저장/preview 기반 기록.
 - [[wiki/04-Records/Worklog/WK-2026-04-17-01-history-panel-separation|WK-2026-04-17-01]] - history panel 분리 기록.
@@ -51,7 +52,7 @@ tags:
 
 ## Sources
 - [[wiki/05-Sources/repos/README|Repo Sources]] - repo overview와 module-level source 진입.
-- [[wiki/05-Sources/repos/votedots-overview|votedots-overview]] - `main@31d22b3` 기준 repo 구조와 구현 사실 요약.
+- [[wiki/05-Sources/repos/votedots-overview|votedots-overview]] - `main@fecd28d` 기준 repo 구조와 구현 사실 요약.
 - [[wiki/05-Sources/repos/votedots-auth-play|votedots-auth-play]] - 인증과 `/play` 진입 흐름 source.
 - [[wiki/05-Sources/repos/votedots-canvas|votedots-canvas]] - canvas 조회와 렌더링 source.
 - [[wiki/05-Sources/repos/votedots-round-vote|votedots-round-vote]] - round 상태와 vote 흐름 source.
@@ -61,6 +62,12 @@ tags:
 - [[wiki/05-Sources/repos/votedots-summary-persistence|votedots-summary-persistence]] - round/game summary와 snapshot 저장 구조 source.
 - [[wiki/05-Sources/issues/README|Issue Sources]] - open issue source 진입.
 - [[wiki/05-Sources/prs/README|PR Sources]] - 핵심 merged PR source 진입.
+- [[wiki/05-Sources/prs/PR-259-prevent-cell-select-on-zoom-reset|PR-259]] - zoom reset 클릭 시 셀 선택 방지.
+- [[wiki/05-Sources/prs/PR-257-prevent-image-drag-ghost|PR-257]] - 캔버스 및 게임 이미지 drag ghost 방지.
+- [[wiki/05-Sources/prs/PR-255-history-refresh-dedup-and-snapshot-fix|PR-255]] - refresh 이후 history 중복과 snapshot 표시 오류 수정.
+- [[wiki/05-Sources/prs/PR-253-game-summary-modal-adjustments|PR-253]] - 게임 종료 통계 수치 및 summary modal 구성 수정.
+- [[wiki/05-Sources/prs/PR-240-initial-center-viewport|PR-240]] - 초기 진입 시 중앙 viewport 적용.
+- [[wiki/05-Sources/prs/PR-238-timeline-based-history-panel|PR-238]] - history panel을 timeline 기반으로 개선.
 - [[wiki/05-Sources/prs/PR-210-separate-game-history-panel-from-canvas-page|PR-210]] - history panel을 canvas page에서 분리.
 - [[wiki/05-Sources/prs/PR-211-round-snapshot-entity-and-storage-path|PR-211]] - round snapshot entity와 storage path 구성.
 - [[wiki/05-Sources/prs/PR-213-server-side-round-snapshot-preview-flow|PR-213]] - server-side snapshot preview 흐름 추가.

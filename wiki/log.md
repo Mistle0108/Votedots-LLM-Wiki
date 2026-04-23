@@ -10,6 +10,28 @@ tags:
 
 # log
 
+## [2026-04-23] update | reflect post-31d22 main work into status, sources, and worklog
+- checked: `votedots` `main@fecd28db8d164c4cbfe2dab72e20df395380321b` locally, with `git fetch origin main` failing due SSH permission and local `origin/main` matching current `main`
+- added: `wiki/05-Sources/prs/PR-238-timeline-based-history-panel.md`
+- added: `wiki/05-Sources/prs/PR-240-initial-center-viewport.md`
+- added: `wiki/05-Sources/prs/PR-253-game-summary-modal-adjustments.md`
+- added: `wiki/05-Sources/prs/PR-255-history-refresh-dedup-and-snapshot-fix.md`
+- added: `wiki/05-Sources/prs/PR-257-prevent-image-drag-ghost.md`
+- added: `wiki/05-Sources/prs/PR-259-prevent-cell-select-on-zoom-reset.md`
+- added: `wiki/04-Records/Worklog/WK-2026-04-22-01-history-timeline-and-canvas-polish.md`
+- updated: `wiki/05-Sources/prs/README.md`
+- updated: `wiki/05-Sources/repos/votedots-overview.md`
+- updated: `wiki/05-Sources/repos/votedots-history-summary.md`
+- updated: `wiki/05-Sources/repos/votedots-canvas.md`
+- updated: `wiki/02-Architecture/Smoke-Test-Scope.md`
+- updated: `wiki/03-Status/Current-State.md`
+- updated: `wiki/03-Status/Next-Work.md`
+- updated: `wiki/04-Records/Worklog/README.md`
+- updated: `wiki/Home/README.md`
+- updated: `wiki/index.md`
+- updated: `wiki/log.md`
+- note: 기존 baseline `main@31d22b3` 이후 `#238`, `#240`, `#253`, `#255`, `#257`, `#259`가 wiki에 누락돼 있어 반영했다. history timeline, 중앙 viewport, summary modal 보정, refresh/drag/zoom interaction fix를 완료 축으로 이동했고, 다음 작업은 UI 잔여 gap, smoke test 회귀 확인, template/profile 기준 정렬로 재정리했다.
+
 ## [2026-04-23] update | slim wiki root AGENTS and move interpretation source to project repo
 - added: `repo-AGENTS.md`
 - updated: `AGENTS.md`

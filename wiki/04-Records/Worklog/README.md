@@ -2,7 +2,7 @@
 title: Worklog
 type: worklog-index
 status: active
-updated: 2026-04-21
+updated: 2026-04-23
 tags:
   - wiki
   - records
@@ -29,6 +29,7 @@ tags:
 ## 현재 기록
 | 날짜 | ID | 작업명 | 관련 source / 결정 | 상태 |
 | --- | --- | --- | --- | --- |
+| 2026-04-22 | [[wiki/04-Records/Worklog/WK-2026-04-22-01-history-timeline-and-canvas-polish|WK-2026-04-22-01]] | history timeline, summary modal, canvas interaction polish 정리 | [[wiki/05-Sources/prs/PR-238-timeline-based-history-panel|PR-238]], [[wiki/05-Sources/prs/PR-240-initial-center-viewport|PR-240]], [[wiki/05-Sources/prs/PR-253-game-summary-modal-adjustments|PR-253]], [[wiki/05-Sources/prs/PR-255-history-refresh-dedup-and-snapshot-fix|PR-255]], [[wiki/05-Sources/prs/PR-257-prevent-image-drag-ghost|PR-257]], [[wiki/05-Sources/prs/PR-259-prevent-cell-select-on-zoom-reset|PR-259]] | `DONE` |
 | 2026-04-21 | [[wiki/04-Records/Worklog/WK-2026-04-21-01-sparse-grid-chunk-rendering|WK-2026-04-21-01]] | 대형 캔버스 sparse grid + chunk 렌더링 정리 | [[wiki/05-Sources/repos/votedots-overview|repo]], [[wiki/05-Sources/prs/PR-233-sparse-grid-chunk-rendering|PR-233]], [[wiki/04-Records/Decisions/DEC-001-sparse-grid-and-chunk-rendering|DEC-001]] | `DONE` |
 | 2026-04-18 | [[wiki/04-Records/Worklog/WK-2026-04-18-01-round-snapshot-storage-preview|WK-2026-04-18-01]] | round snapshot 저장/preview 기반 정리 | [[wiki/05-Sources/prs/PR-211-round-snapshot-entity-and-storage-path|PR-211]], [[wiki/05-Sources/prs/PR-213-server-side-round-snapshot-preview-flow|PR-213]], [[wiki/04-Records/Decisions/DEC-002-summary-ready-event-and-snapshot-flow|DEC-002]] | `DONE` |
 | 2026-04-17 | [[wiki/04-Records/Worklog/WK-2026-04-17-01-history-panel-separation|WK-2026-04-17-01]] | history panel을 canvas page에서 분리 | [[wiki/05-Sources/prs/PR-210-separate-game-history-panel-from-canvas-page|PR-210]], [[wiki/05-Sources/issues/ISSUE-206-game-history-panel-snapshot-archive|ISSUE-206]] | `DONE` |
