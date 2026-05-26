@@ -2,7 +2,7 @@
 title: Wiki Index
 type: index
 status: active
-updated: 2026-04-23
+updated: 2026-05-26
 tags:
   - wiki
   - index
@@ -31,7 +31,7 @@ tags:
 - [[wiki/02-Architecture/Operations|Operations]] - 운영 아키텍처 구조, 배포 topology, 외부 의존성.
 
 ## Status
-- [[wiki/03-Status/Current-State|Current State]] - `main@fecd28d` 기준 완료/부분 완료/미완료 상태.
+- [[wiki/03-Status/Current-State|Current State]] - `main@ca5d493` 기준 완료/부분 완료/미완료 상태.
 - [[wiki/03-Status/Next-Work|Next Work]] - 다음 우선 작업과 선행 조건.
 
 ## Records
@@ -52,14 +52,18 @@ tags:
 
 ## Sources
 - [[wiki/05-Sources/repos/README|Repo Sources]] - repo overview와 module-level source 진입.
-- [[wiki/05-Sources/repos/votedots-overview|votedots-overview]] - `main@fecd28d` 기준 repo 구조와 구현 사실 요약.
-- [[wiki/05-Sources/repos/votedots-auth-play|votedots-auth-play]] - 인증과 `/play` 진입 흐름 source.
+- [[wiki/05-Sources/repos/votedots-overview|votedots-overview]] - `main@ca5d493` 기준 repo 구조와 구현 사실 요약.
+- [[wiki/05-Sources/repos/votedots-auth-play|votedots-auth-play]] - 인증과 `/play -> /plaza` 진입 흐름 source.
+- [[wiki/05-Sources/repos/votedots-lobby-room|votedots-lobby-room]] - plaza, lobby, room, guest/member 입장 흐름 source.
+- [[wiki/05-Sources/repos/votedots-public-surface|votedots-public-surface]] - landing, completed canvas, 공개 정적 페이지 source.
+- [[wiki/05-Sources/repos/votedots-account-analytics|votedots-account-analytics]] - 계정, mypage, 방문 이벤트/집계 source.
 - [[wiki/05-Sources/repos/votedots-canvas|votedots-canvas]] - canvas 조회와 렌더링 source.
 - [[wiki/05-Sources/repos/votedots-round-vote|votedots-round-vote]] - round 상태와 vote 흐름 source.
 - [[wiki/05-Sources/repos/votedots-history-summary|votedots-history-summary]] - summary, history, snapshot source.
 - [[wiki/05-Sources/repos/votedots-data-infra|votedots-data-infra]] - data source, session, storage, prod dependency source.
 - [[wiki/05-Sources/repos/votedots-schema-entities|votedots-schema-entities]] - migration과 핵심 entity 구조 source.
 - [[wiki/05-Sources/repos/votedots-summary-persistence|votedots-summary-persistence]] - round/game summary와 snapshot 저장 구조 source.
+- [[wiki/05-Sources/repos/votedots-quality-ops|votedots-quality-ops]] - test, CI/CD, public page sync, 운영 스크립트 source.
 - [[wiki/05-Sources/issues/README|Issue Sources]] - open issue source 진입.
 - [[wiki/05-Sources/prs/README|PR Sources]] - 핵심 merged PR source 진입.
 - [[wiki/05-Sources/prs/PR-259-prevent-cell-select-on-zoom-reset|PR-259]] - zoom reset 클릭 시 셀 선택 방지.

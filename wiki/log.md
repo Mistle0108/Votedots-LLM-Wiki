@@ -2,13 +2,36 @@
 title: Wiki Log
 type: log
 status: active
-updated: 2026-04-23
+updated: 2026-05-26
 tags:
   - wiki
   - log
 ---
 
 # log
+
+## [2026-05-26] update | reflect current main baseline into public, room, account, and quality docs
+- checked: `votedots` `main@ca5d4935b181dbd72e4895de5965b91ae7ae5d4a`, wiki `origin/main@3702b6f260b3d3e6faebdcb88e4a6b04f14918e1`
+- added: `wiki/05-Sources/repos/votedots-lobby-room.md`
+- added: `wiki/05-Sources/repos/votedots-public-surface.md`
+- added: `wiki/05-Sources/repos/votedots-account-analytics.md`
+- added: `wiki/05-Sources/repos/votedots-quality-ops.md`
+- updated: `wiki/05-Sources/repos/README.md`
+- updated: `wiki/05-Sources/repos/votedots-overview.md`
+- updated: `wiki/05-Sources/repos/votedots-auth-play.md`
+- updated: `wiki/05-Sources/repos/votedots-canvas.md`
+- updated: `wiki/05-Sources/repos/votedots-round-vote.md`
+- updated: `wiki/05-Sources/repos/votedots-history-summary.md`
+- updated: `wiki/02-Architecture/System-Reference.md`
+- updated: `wiki/02-Architecture/Data-Flow.md`
+- updated: `wiki/02-Architecture/Operations.md`
+- updated: `wiki/02-Architecture/Smoke-Test-Scope.md`
+- updated: `wiki/03-Status/Current-State.md`
+- updated: `wiki/03-Status/Next-Work.md`
+- updated: `wiki/Home/README.md`
+- updated: `wiki/index.md`
+- updated: `wiki/log.md`
+- note: 기존 wiki baseline이 `main@fecd28d`에 머물러 있어 현재 `main@ca5d493` 기준의 public landing, completed canvas, lobby/room, guest/member 계정, mypage, analytics, test/CI/CD 축이 비어 있었다. 이번 갱신에서는 PR별 전수 backfill 대신 현재 브랜치 기능 축을 묶는 repo/module source를 추가하고, architecture/status 진입 문서를 그 기준으로 재정렬했다.
 
 ## [2026-04-23] update | reflect post-31d22 main work into status, sources, and worklog
 - checked: `votedots` `main@fecd28db8d164c4cbfe2dab72e20df395380321b` locally, with `git fetch origin main` failing due SSH permission and local `origin/main` matching current `main`
